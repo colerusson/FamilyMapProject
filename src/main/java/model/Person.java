@@ -1,16 +1,54 @@
 package model;
 
+
+/**
+ *
+ */
 public class Person {
 
+    /**
+     *
+     */
     private String personID;
+
+    /**
+     *
+     */
     private String associatedUsername;
+
+    /**
+     *
+     */
     private String firstName;
+
+    /**
+     *
+     */
     private String lastName;
+
+    /**
+     *
+     */
     private String gender;
+
+    /**
+     *
+     */
     private String fatherID;
+
+    /**
+     *
+     */
     private String motherID;
+
+    /**
+     *
+     */
     private String spouseID;
 
+    /**
+     *
+     */
     public Person(String personID, String associatedUsername, String firstName, String lastName, String gender,
                   String fatherID, String motherID, String spouseID) {
         this.personID = personID;

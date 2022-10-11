@@ -2,10 +2,24 @@ package requestResult;
 
 import model.Person;
 
+/**
+ *
+ */
 public class PersonResult {
 
+    /**
+     *
+     */
     private Person[] data;
+
+    /**
+     *
+     */
     private String message;
+
+    /**
+     *
+     */
     private boolean success;
 
     public Person[] getData() {

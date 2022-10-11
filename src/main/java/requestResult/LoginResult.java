@@ -1,11 +1,33 @@
 package requestResult;
 
+/**
+ *
+ */
 public class LoginResult {
 
+    /**
+     *
+     */
     private String authtoken;
+
+    /**
+     *
+     */
     private String username;
+
+    /**
+     *
+     */
     private String personID;
+
+    /**
+     *
+     */
     private String message;
+
+    /**
+     *
+     */
     private boolean success;
 
     public String getAuthtoken() {

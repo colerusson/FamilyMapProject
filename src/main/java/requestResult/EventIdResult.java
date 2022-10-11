@@ -1,17 +1,63 @@
 package requestResult;
 
+/**
+ *
+ */
 public class EventIdResult {
 
+    /**
+     *
+     */
     private String associatedUsername;
+
+    /**
+     *
+     */
     private String eventID;
+
+    /**
+     *
+     */
     private String personID;
+
+    /**
+     *
+     */
     private Float latitude;
+
+    /**
+     *
+     */
     private Float longitude;
+
+    /**
+     *
+     */
     private String country;
+
+    /**
+     *
+     */
     private String city;
+
+    /**
+     *
+     */
     private String eventType;
+
+    /**
+     *
+     */
     private Integer year;
+
+    /**
+     *
+     */
     private String message;
+
+    /**
+     *
+     */
     private boolean success;
 
     public String getAssociatedUsername() {

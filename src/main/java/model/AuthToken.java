@@ -1,14 +1,28 @@
 package model;
 
+/**
+ *
+ */
 public class AuthToken {
 
+    /**
+     *
+     */
     private String authtoken;
+
+    /**
+     *
+     */
     private String username;
 
+    /**
+     *
+     */
     public AuthToken(String authtoken, String username) {
         this.authtoken = authtoken;
         this.username = username;
     }
+
 
     public String getAuthtoken() {
         return authtoken;

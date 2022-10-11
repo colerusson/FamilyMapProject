@@ -5,13 +5,26 @@ import model.Event;
 import java.sql.*;
 import java.util.List;
 
+/**
+ *
+ */
 public class EventDao {
+
+    /**
+     *
+     */
     private final Connection conn;
 
+    /**
+     *
+     */
     public EventDao(Connection conn) {
         this.conn = conn;
     }
 
+    /**
+     *
+     */
     public void insert(Event event) throws DataAccessException {
         //We can structure our string to be similar to a sql command, but if we insert question
         //marks we can change them later with help from the statement
@@ -38,6 +51,9 @@ public class EventDao {
         }
     }
 
+    /**
+     *
+     */
     public Event getEventByID(String eventID) throws DataAccessException {
         Event event;
         ResultSet rs;
@@ -61,6 +77,9 @@ public class EventDao {
 
     }
 
+    /**
+     *
+     */
     public void clear() throws DataAccessException {
         String sql = "DELETE FROM Events";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -71,27 +90,44 @@ public class EventDao {
         }
     }
 
+    /**
+     *
+     */
     public List<Event> getEventsForUser(String username) {
         return null;
     }
 
+    /**
+     *
+     */
     public List<Event> getEventsByType(String eventType) {
         return null;
     }
 
+    /**
+     *
+     */
     public List<Event> getEventsByYear(Integer year) {
         return null;
     }
 
+    /**
+     *
+     */
     public List<Event> getEventsByCountry(String country) {
         return null;
     }
 
+    /**
+     *
+     */
     public void deleteRow() {
     }
 
+    /**
+     *
+     */
     public void deleteTable() {
-
     }
 
 }

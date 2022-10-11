@@ -1,16 +1,58 @@
 package requestResult;
 
+/**
+ *
+ */
 public class PersonIdResult {
 
+    /**
+     *
+     */
     private String associatedUsername;
+
+    /**
+     *
+     */
     private String personID;
+
+    /**
+     *
+     */
     private String firstName;
+
+    /**
+     *
+     */
     private String lastName;
+
+    /**
+     *
+     */
     private String gender;
+
+    /**
+     *
+     */
     private String fatherID;
+
+    /**
+     *
+     */
     private String motherID;
+
+    /**
+     *
+     */
     private String spouseID;
+
+    /**
+     *
+     */
     private String message;
+
+    /**
+     *
+     */
     private boolean success;
 
     public String getAssociatedUsername() {

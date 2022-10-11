@@ -1,8 +1,18 @@
 package requestResult;
 
+/**
+ *
+ */
 public class FillRequest {
 
+    /**
+     *
+     */
     private String username;
+
+    /**
+     *
+     */
     private int generations;
 
     public String getUsername() {

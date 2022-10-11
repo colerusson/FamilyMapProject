@@ -1,7 +1,13 @@
 package requestResult;
 
+/**
+ *
+ */
 public class EventIdRequest {
 
+    /**
+     *
+     */
     private String eventID;
 
     public String getEventID() {

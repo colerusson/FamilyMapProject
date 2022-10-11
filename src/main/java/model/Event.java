@@ -2,17 +2,59 @@ package model;
 
 import java.util.Objects;
 
+/**
+ *
+ */
 public class Event {
+
+    /**
+     *
+     */
     private String eventID;
+
+    /**
+     *
+     */
     private String associatedUsername;
+
+    /**
+     *
+     */
     private String personID;
+
+    /**
+     *
+     */
     private Float latitude;
+
+    /**
+     *
+     */
     private Float longitude;
+
+    /**
+     *
+     */
     private String country;
+
+    /**
+     *
+     */
     private String city;
+
+    /**
+     *
+     */
     private String eventType;
+
+    /**
+     *
+     */
     private Integer year;
 
+    /**
+     *
+     */
     public Event(String eventID, String username, String personID, Float latitude, Float longitude,
                  String country, String city, String eventType, Integer year) {
         this.eventID = eventID;
@@ -98,6 +140,9 @@ public class Event {
         this.year = year;
     }
 
+    /**
+     *
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

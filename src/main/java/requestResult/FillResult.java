@@ -1,8 +1,18 @@
 package requestResult;
 
+/**
+ *
+ */
 public class FillResult {
 
+    /**
+     *
+     */
     private String message;
+
+    /**
+     *
+     */
     private boolean success;
 
     public String getMessage() {

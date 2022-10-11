@@ -2,10 +2,24 @@ package requestResult;
 
 import model.Event;
 
+/**
+ *
+ */
 public class EventResult {
 
+    /**
+     *
+     */
     private Event[] data;
+
+    /**
+     *
+     */
     private String message;
+
+    /**
+     *
+     */
     private boolean success;
 
     public Event[] getData() {

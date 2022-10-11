@@ -1,7 +1,13 @@
 package requestResult;
 
+/**
+ *
+ */
 public class PersonIdRequest {
 
+    /**
+     *
+     */
     private String personID;
 
     public String getPersonID() {
