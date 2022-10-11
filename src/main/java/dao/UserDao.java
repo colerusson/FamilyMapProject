@@ -11,14 +11,22 @@ public class UserDao {
         this.conn = conn;
     }
 
-    void createUser(User user) {
+    public void createUser(User user) {
     }
 
-    boolean validate(String username, String password) {
+    public boolean validate(String username, String password) {
         return false;
     }
 
-    User getUserById(String userId) {
+    public User getUserById(String userId) {
+        return null;
+    }
+
+    public User getUserByName(String firstName, String lastName) {
+        return null;
+    }
+
+    public User getUserByPersonID(String personID) {
         return null;
     }
 

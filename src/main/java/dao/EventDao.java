@@ -38,7 +38,7 @@ public class EventDao {
         }
     }
 
-    public Event find(String eventID) throws DataAccessException {
+    public Event getEventByID(String eventID) throws DataAccessException {
         Event event;
         ResultSet rs;
         String sql = "SELECT * FROM Events WHERE EventID = ?;";
@@ -71,10 +71,20 @@ public class EventDao {
         }
     }
 
-    public List<Event> findForUser(String username) {
+    public List<Event> getEventsForUser(String username) {
         return null;
     }
 
+    public List<Event> getEventsByType(String eventType) {
+        return null;
+    }
 
+    public List<Event> getEventsByYear(Integer year) {
+        return null;
+    }
+
+    public List<Event> getEventsByCountry(String country) {
+        return null;
+    }
 
 }
