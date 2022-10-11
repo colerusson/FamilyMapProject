@@ -1,12 +1,12 @@
 package requestResult;
 
 /**
- *
+ * eventID request class, builds the object of this request
  */
 public class EventIdRequest {
 
     /**
-     *
+     * string of the ID of the event
      */
     private String eventID;
 

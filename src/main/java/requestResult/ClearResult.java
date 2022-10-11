@@ -1,17 +1,17 @@
 package requestResult;
 
 /**
- *
+ * clear result class, builds the object of the result of this request
  */
 public class ClearResult {
 
     /**
-     *
+     * string of the output message, success or failure
      */
     private String message;
 
     /**
-     *
+     * boolean indicating the success, true for success, false for failure
      */
     private boolean success;
 

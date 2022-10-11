@@ -1,12 +1,12 @@
 package requestResult;
 
 /**
- *
+ * personID request class, builds the object of this request
  */
 public class PersonIdRequest {
 
     /**
-     *
+     * string of the ID of the person
      */
     private String personID;
 

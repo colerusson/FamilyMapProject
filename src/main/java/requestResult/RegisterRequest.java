@@ -1,37 +1,37 @@
 package requestResult;
 
 /**
- *
+ * register request class, builds the object of this request
  */
 public class RegisterRequest {
 
     /**
-     *
+     * string of the username of the user registering
      */
     private String username;
 
     /**
-     *
+     * string of the password of the user registering
      */
     private String password;
 
     /**
-     *
+     * string of the email of the user registering
      */
     private String email;
 
     /**
-     *
+     * string of the first name of the user registering
      */
     private String firstName;
 
     /**
-     *
+     * string of the last name of the user registering
      */
     private String lastName;
 
     /**
-     *
+     * string of the gender of the user registering, either 'f' or 'm'
      */
     private String gender;
 

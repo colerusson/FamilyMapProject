@@ -3,57 +3,57 @@ package model;
 import java.util.Objects;
 
 /**
- *
+ * Event method class the make a java object of the data in a row in the event table
  */
 public class Event {
 
     /**
-     *
+     * string of the eventID
      */
     private String eventID;
 
     /**
-     *
+     * string of the associatedUsername for the user to the event
      */
     private String associatedUsername;
 
     /**
-     *
+     * string of the personID of the event
      */
     private String personID;
 
     /**
-     *
+     * Float of the latitude of the event, so decimals can be included
      */
     private Float latitude;
 
     /**
-     *
+     * Float of the longitude of the event, so decimals can be included
      */
     private Float longitude;
 
     /**
-     *
+     * string of the country name where the event is
      */
     private String country;
 
     /**
-     *
+     * string of the city name where the event is
      */
     private String city;
 
     /**
-     *
+     * string of the event type
      */
     private String eventType;
 
     /**
-     *
+     * int of the year the event occurred
      */
     private Integer year;
 
     /**
-     *
+     * public constructor, setting each member variable equal to these parameters
      */
     public Event(String eventID, String username, String personID, Float latitude, Float longitude,
                  String country, String city, String eventType, Integer year) {
@@ -141,7 +141,7 @@ public class Event {
     }
 
     /**
-     *
+     * overriden equals method to compare objects
      */
     @Override
     public boolean equals(Object o) {

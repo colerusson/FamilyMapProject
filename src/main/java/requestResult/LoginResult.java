@@ -1,32 +1,32 @@
 package requestResult;
 
 /**
- *
+ * login result class, builds the object of the result of this request
  */
 public class LoginResult {
 
     /**
-     *
+     * string of the authtoken generated from the login/request
      */
     private String authtoken;
 
     /**
-     *
+     * string of the username of the user logging in
      */
     private String username;
 
     /**
-     *
+     * string of the ID of the user logging in
      */
     private String personID;
 
     /**
-     *
+     * string of the output message, success or failure
      */
     private String message;
 
     /**
-     *
+     * boolean indicating the success, true for success, false for failure
      */
     private boolean success;
 

@@ -1,47 +1,47 @@
 package model;
 
 /**
- *
+ * User method class the make a java object of the data in a row in the user table
  */
 public class User {
 
     /**
-     *
+     * string of the username of the user
      */
     private String username;
 
     /**
-     *
+     * string of the password of the user
      */
     private String password;
 
     /**
-     *
+     * string of the email of the user
      */
     private String email;
 
     /**
-     *
+     * string of the first name of the user
      */
     private String firstName;
 
     /**
-     *
+     * string of the last name of the user
      */
     private String lastName;
 
     /**
-     *
+     * string of the gender of the user, will be 'f' or 'm'
      */
     private String gender;
 
     /**
-     *
+     * string of the personID of the user
      */
     private String personID;
 
     /**
-     *
+     * public constructor of the User object, setting each member variable to these parameters
      */
     public User(String username, String password, String email, String firstName, String lastName,
                 String gender, String personID) {

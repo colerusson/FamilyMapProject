@@ -1,41 +1,41 @@
 package requestResult;
 
 /**
- *
+ * register result class, builds the object of the result of this request
  */
 public class RegisterResult {
 
     /**
-     *
+     * string of the authtoken generated for the user registering
      */
-    private String authotoken;
+    private String authtoken;
 
     /**
-     *
+     * string of the username of the user registering
      */
     private String username;
 
     /**
-     *
+     * string of the person ID of the user registering
      */
     private String personID;
 
     /**
-     *
+     * string of the output message, success or failure
      */
     private String message;
 
     /**
-     *
+     * boolean indicating the success, true for success, false for failure
      */
     private boolean success;
 
-    public String getAuthotoken() {
-        return authotoken;
+    public String getAuthtoken() {
+        return authtoken;
     }
 
-    public void setAuthotoken(String authotoken) {
-        this.authotoken = authotoken;
+    public void setAuthtoken(String authtoken) {
+        this.authtoken = authtoken;
     }
 
     public String getUsername() {
