@@ -30,4 +30,11 @@ public class UserDao {
         return null;
     }
 
+    public void deleteRow() {
+    }
+
+    public void deleteTable() {
+
+    }
+
 }

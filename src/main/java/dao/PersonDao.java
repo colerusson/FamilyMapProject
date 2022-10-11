@@ -31,4 +31,11 @@ public class PersonDao {
         return null;
     }
 
+    public void deleteRow() {
+    }
+
+    public void deleteTable() {
+
+    }
+
 }

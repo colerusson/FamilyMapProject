@@ -21,4 +21,11 @@ public class AuthTokenDao {
     public AuthToken getTokenByUsername(String username) {
         return null;
     }
+
+    public void deleteRow() {
+    }
+
+    public void deleteTable() {
+
+    }
 }

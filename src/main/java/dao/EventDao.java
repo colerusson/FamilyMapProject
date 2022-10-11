@@ -87,4 +87,11 @@ public class EventDao {
         return null;
     }
 
+    public void deleteRow() {
+    }
+
+    public void deleteTable() {
+
+    }
+
 }
