@@ -60,7 +60,7 @@ public class EventDao {
      * @throws DataAccessException error in accessing the table
      * @return an event method object for the even found
      */
-    public Event getEventByID(String eventID) throws DataAccessException {
+    public Event find(String eventID) throws DataAccessException {
         Event event;
         ResultSet rs;
         String sql = "SELECT * FROM Events WHERE EventID = ?;";
