@@ -75,6 +75,7 @@ public class PersonDaoTest {
 
     @Test
     public void findFail() throws DataAccessException {
+        pDao.clear();
         Person notFoundTest = pDao.find(bestPerson.getPersonID());
         assertNull(notFoundTest);
     }
