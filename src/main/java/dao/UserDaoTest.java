@@ -68,4 +68,42 @@ public class UserDaoTest {
         // instance of the class in the first parameter, which in this case is a DataAccessException.
         assertThrows(DataAccessException.class, () -> uDao.insert(bestUser));
     }
+
+    @Test
+    public void findPass() throws DataAccessException {
+        // Start by inserting an event into the database.
+        uDao.insert(bestUser);
+        // Let's use a find method to get the event that we just put in back out.
+        User compareTest = uDao.find(bestUser.getUsername());
+        // First lets see if our find method found anything at all. If it did then we know that we got
+        // something back from our database.
+        assertNotNull(compareTest);
+        // Now lets make sure that what we put in is the same as what we got out. If this
+        // passes then we know that our insert did put something in, and that it didn't change the
+        // data in any way.
+        // This assertion works by calling the equals method in the Event class.
+        assertEquals(bestUser, compareTest);
+    }
+
+    @Test
+    public void findFail() throws DataAccessException {
+        // Let's do this test again, but this time lets try to make it fail.
+        // If we call the method the first time the event will be inserted successfully.
+        uDao.find(bestUser.getUsername());
+
+        // However, our sql table is set up so that the column "eventID" must be unique, so trying to insert
+        // the same event again will cause the insert method to throw an exception, and we can verify this
+        // behavior by using the assertThrows assertion as shown below.
+
+        // Note: This call uses a lambda function. A lambda function runs the code that comes after
+        // the "()->", and the assertThrows assertion expects the code that ran to throw an
+        // instance of the class in the first parameter, which in this case is a DataAccessException.
+        assertThrows(DataAccessException.class, () -> uDao.find(bestUser.getUsername()));
+    }
+
+    @Test
+    public void clearPass() throws DataAccessException {
+        uDao.clear();
+    }
+
 }
