@@ -87,18 +87,8 @@ public class UserDaoTest {
 
     @Test
     public void findFail() throws DataAccessException {
-        // Let's do this test again, but this time lets try to make it fail.
-        // If we call the method the first time the event will be inserted successfully.
-        uDao.find(bestUser.getUsername());
-
-        // However, our sql table is set up so that the column "eventID" must be unique, so trying to insert
-        // the same event again will cause the insert method to throw an exception, and we can verify this
-        // behavior by using the assertThrows assertion as shown below.
-
-        // Note: This call uses a lambda function. A lambda function runs the code that comes after
-        // the "()->", and the assertThrows assertion expects the code that ran to throw an
-        // instance of the class in the first parameter, which in this case is a DataAccessException.
-        assertThrows(DataAccessException.class, () -> uDao.find(bestUser.getUsername()));
+        User notFoundTest = uDao.find(bestUser.getUsername());
+        assertNull(notFoundTest);
     }
 
     @Test
