@@ -1,4 +1,4 @@
-package request.handlers;
+package handlers;
 
 public class PersonHandler {
 }
