@@ -5,23 +5,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- *
+ * This is the Database class to manage and handle connection objects to our database
  */
 public class Database {
 
     /**
-     *
+     * Connection private variable to store the connection to the database
      */
     private Connection conn;
 
     /**
-     *
+     * method to open the connection
+     * @throws DataAccessException error in accessing the database
      */
     public Connection openConnection() throws DataAccessException {
         try {
             // The Structure for this Connection is driver:language:path
             // The path assumes you start in the root of your project unless given a full file path
-            final String CONNECTION_URL = "jdbc:sqlite:familymap.sqlite";
+            final String CONNECTION_URL = "jdbc:sqlite:database/myDatabase.db";
 
             // Open a database connection to the file given in the path
             conn = DriverManager.getConnection(CONNECTION_URL);
@@ -37,7 +38,8 @@ public class Database {
     }
 
     /**
-     *
+     * method to get the connection we have already opened
+     * @throws DataAccessException
      */
     public Connection getConnection() throws DataAccessException {
         if (conn == null) {
@@ -55,7 +57,8 @@ public class Database {
     // DATABASE TO LOCK. YOUR CODE MUST ALWAYS CLOSE THE DATABASE NO MATTER WHAT ERRORS
     // OR PROBLEMS ARE ENCOUNTERED
     /**
-     *
+     * method to close the connection we have made
+     * @param commit telling us if we have changes to commit to the database
      */
     public void closeConnection(boolean commit) {
         try {
@@ -64,7 +67,7 @@ public class Database {
                 conn.commit();
             } else {
                 // If we find out something went wrong, pass a false into closeConnection and this
-                // will rollback any changes we made during this connection
+                // will roll back any changes we made during this connection
                 conn.rollback();
             }
             conn.close();
