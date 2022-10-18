@@ -75,14 +75,18 @@ public class PersonDaoTest {
 
     @Test
     public void findFail() throws DataAccessException {
+        // clear the database
         pDao.clear();
+        // assert that null is returned when find is called
         Person notFoundTest = pDao.find(bestPerson.getPersonID());
         assertNull(notFoundTest);
     }
 
     @Test
     public void clearPass() throws DataAccessException {
+        // first clear the database
         pDao.clear();
+        // check to see if anything is still in the database
         Person notFoundTest = pDao.find(bestPerson.getPersonID());
         assertNull(notFoundTest);
     }

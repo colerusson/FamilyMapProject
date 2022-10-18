@@ -87,14 +87,18 @@ public class UserDaoTest {
 
     @Test
     public void findFail() throws DataAccessException {
+        // clear the database
         uDao.clear();
+        // assert that null was returned for finding
         User notFoundTest = uDao.find(bestUser.getUsername());
         assertNull(notFoundTest);
     }
 
     @Test
     public void clearPass() throws DataAccessException {
+        // clear the database
         uDao.clear();
+        // check to see if database is empty
         User notFoundTest = uDao.find(bestUser.getUsername());
         assertNull(notFoundTest);
     }
