@@ -1,4 +1,5 @@
 package model;
+//import com.google.gson.Gson;
 
 /**
  * Authtoken method class the make a java object of the data in a row in the authtoken table

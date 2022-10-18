@@ -1,4 +1,4 @@
-package requestResult;
+package result;
 
 /**
  * eventID result class, builds the object of the result of this request

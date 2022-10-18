@@ -1,16 +1,9 @@
-package requestResult;
-
-import model.Event;
+package result;
 
 /**
- * event result class, builds the object of the result of this request
+ * clear result class, builds the object of the result of this request
  */
-public class EventResult {
-
-    /**
-     * an array of event objects to hold all of the user's events
-     */
-    private Event[] data;
+public class ClearResult {
 
     /**
      * string of the output message, success or failure
@@ -21,14 +14,6 @@ public class EventResult {
      * boolean indicating the success, true for success, false for failure
      */
     private boolean success;
-
-    public Event[] getData() {
-        return data;
-    }
-
-    public void setData(Event[] data) {
-        this.data = data;
-    }
 
     public String getMessage() {
         return message;

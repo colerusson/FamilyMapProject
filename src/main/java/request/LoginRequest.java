@@ -1,4 +1,4 @@
-package requestResult;
+package request;
 
 /**
  * login request class, builds the object of this request

@@ -1,4 +1,4 @@
-package requestResult;
+package result;
 
 import model.Person;
 

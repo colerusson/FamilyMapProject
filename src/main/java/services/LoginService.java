@@ -1,7 +1,7 @@
 package services;
 
-import requestResult.RegisterRequest;
-import requestResult.RegisterResult;
+import request.RegisterRequest;
+import result.RegisterResult;
 
 /**
  * request service class for login request, runs the functionality to actually perform the request

@@ -1,4 +1,4 @@
-package handlers;
+package request.handlers;
 
 public class JsonDecoder {
 }

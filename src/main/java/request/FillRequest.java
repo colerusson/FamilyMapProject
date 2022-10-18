@@ -1,4 +1,4 @@
-package requestResult;
+package request;
 
 /**
  * fill request class, builds the object of this request

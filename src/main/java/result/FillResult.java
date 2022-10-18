@@ -1,9 +1,9 @@
-package requestResult;
+package result;
 
 /**
- * load result class, builds the object of the result of this request
+ * fill result class, builds the object of the result of this request
  */
-public class LoadResult {
+public class FillResult {
 
     /**
      * string of the output message, success or failure

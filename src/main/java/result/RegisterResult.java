@@ -1,22 +1,22 @@
-package requestResult;
+package result;
 
 /**
- * login result class, builds the object of the result of this request
+ * register result class, builds the object of the result of this request
  */
-public class LoginResult {
+public class RegisterResult {
 
     /**
-     * string of the authtoken generated from the login/request
+     * string of the authtoken generated for the user registering
      */
     private String authtoken;
 
     /**
-     * string of the username of the user logging in
+     * string of the username of the user registering
      */
     private String username;
 
     /**
-     * string of the ID of the user logging in
+     * string of the person ID of the user registering
      */
     private String personID;
 

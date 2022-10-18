@@ -1,4 +1,4 @@
-package requestResult;
+package result;
 
 /**
  * personID result class, builds the object of the result of this request
