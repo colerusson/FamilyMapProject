@@ -83,6 +83,8 @@ public class PersonDaoTest {
     @Test
     public void clearPass() throws DataAccessException {
         pDao.clear();
+        Person notFoundTest = pDao.find(bestPerson.getPersonID());
+        assertNull(notFoundTest);
     }
 
 }

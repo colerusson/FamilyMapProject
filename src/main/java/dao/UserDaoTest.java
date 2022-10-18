@@ -95,6 +95,8 @@ public class UserDaoTest {
     @Test
     public void clearPass() throws DataAccessException {
         uDao.clear();
+        User notFoundTest = uDao.find(bestUser.getUsername());
+        assertNull(notFoundTest);
     }
 
 }
