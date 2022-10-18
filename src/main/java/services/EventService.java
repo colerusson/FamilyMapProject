@@ -1,7 +1,7 @@
 package services;
 
-import request.RegisterRequest;
-import result.RegisterResult;
+import request.EventRequest;
+import result.EventResult;
 
 /**
  * request service class for event request, runs the functionality to actually perform the request
@@ -10,10 +10,10 @@ public class EventService {
 
     /**
      * event method to actually run the request sent int from the user to get all events
-     * @param registerRequest a request object sent in form the handler
+     * @param eventRequest a request object sent in form the handler
      * @return a register result object obtained from the result package classes
      */
-    public RegisterResult eventService(RegisterRequest registerRequest) {
+    public EventResult eventService(EventRequest eventRequest) {
         return null;
     }
 }
