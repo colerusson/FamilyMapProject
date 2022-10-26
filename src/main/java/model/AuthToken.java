@@ -1,6 +1,8 @@
 package model;
 //import com.google.gson.Gson;
 
+import java.util.Objects;
+
 /**
  * Authtoken method class the make a java object of the data in a row in the authtoken table
  */
@@ -41,5 +43,13 @@ public class AuthToken {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthToken token = (AuthToken) o;
+        return Objects.equals(authtoken, token.authtoken) && Objects.equals(username, token.username);
     }
 }

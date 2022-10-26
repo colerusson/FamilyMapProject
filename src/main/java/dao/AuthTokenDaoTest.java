@@ -2,6 +2,7 @@ package dao;
 
 import model.AuthToken;
 import model.Event;
+import model.Person;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,11 +11,10 @@ import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//We will use this to test that our insert method is working and failing in the right ways
-public class EventDaoTest {
+public class AuthTokenDaoTest {
     private Database db;
-    private Event bestEvent;
-    private EventDao eDao;
+    private AuthToken bestAuthToken;
+    private AuthTokenDao aDao;
 
     @BeforeEach
     public void setUp() throws DataAccessException {
@@ -22,16 +22,14 @@ public class EventDaoTest {
         // lets create a new instance of the Database class
         db = new Database();
         // and a new event with random data
-        bestEvent = new Event("Biking_123A", "Gale", "Gale123A",
-                35.9f, 140.1f, "Japan", "Ushiku",
-                "Biking_Around", 2016);
+        bestAuthToken = new AuthToken("authToken_123A", "Gale");
 
         // Here, we'll open the connection in preparation for the test case to use it
         Connection conn = db.getConnection();
         //Then we pass that connection to the EventDAO, so it can access the database.
-        eDao = new EventDao(conn);
+        aDao = new AuthTokenDao(conn);
         //Let's clear the database as well so any lingering data doesn't affect our tests
-        eDao.clear();
+        aDao.clear();
     }
 
     @AfterEach
@@ -45,9 +43,9 @@ public class EventDaoTest {
     @Test
     public void insertPass() throws DataAccessException {
         // Start by inserting an event into the database.
-        eDao.insert(bestEvent);
+        aDao.insert(bestAuthToken);
         // Let's use a find method to get the event that we just put in back out.
-        Event compareTest = eDao.find(bestEvent.getEventID());
+        AuthToken compareTest = aDao.find(bestAuthToken.getAuthtoken());
         // First lets see if our find method found anything at all. If it did then we know that we got
         // something back from our database.
         assertNotNull(compareTest);
@@ -55,14 +53,14 @@ public class EventDaoTest {
         // passes then we know that our insert did put something in, and that it didn't change the
         // data in any way.
         // This assertion works by calling the equals method in the Event class.
-        assertEquals(bestEvent, compareTest);
+        assertEquals(bestAuthToken, compareTest);
     }
 
     @Test
     public void insertFail() throws DataAccessException {
         // Let's do this test again, but this time lets try to make it fail.
         // If we call the method the first time the event will be inserted successfully.
-        eDao.insert(bestEvent);
+        aDao.insert(bestAuthToken);
 
         // However, our sql table is set up so that the column "eventID" must be unique, so trying to insert
         // the same event again will cause the insert method to throw an exception, and we can verify this
@@ -71,33 +69,33 @@ public class EventDaoTest {
         // Note: This call uses a lambda function. A lambda function runs the code that comes after
         // the "()->", and the assertThrows assertion expects the code that ran to throw an
         // instance of the class in the first parameter, which in this case is a DataAccessException.
-        assertThrows(DataAccessException.class, () -> eDao.insert(bestEvent));
+        assertThrows(DataAccessException.class, () -> aDao.insert(bestAuthToken));
     }
 
     @Test
     public void findPass() throws DataAccessException {
         // Start by inserting an event into the database.
-        eDao.insert(bestEvent);
-        Event compareTest = eDao.find(bestEvent.getEventID());
+        aDao.insert(bestAuthToken);
+        AuthToken compareTest = aDao.find(bestAuthToken.getAuthtoken());
         assertNotNull(compareTest);
-        assertEquals(bestEvent, compareTest);
+        assertEquals(bestAuthToken, compareTest);
     }
 
     @Test
     public void findFail() throws DataAccessException {
         // clear the database
-        eDao.clear();
+        aDao.clear();
         // assert that null is returned when find is called
-        Event notFoundTest = eDao.find(bestEvent.getEventID());
+        AuthToken notFoundTest = aDao.find(bestAuthToken.getAuthtoken());
         assertNull(notFoundTest);
     }
 
     @Test
     public void clearPass() throws DataAccessException {
         // first clear the database
-        eDao.clear();
+        aDao.clear();
         // check to see if anything is still in the database
-        Event notFoundTest = eDao.find(bestEvent.getEventID());
+        AuthToken notFoundTest = aDao.find(bestAuthToken.getAuthtoken());
         assertNull(notFoundTest);
     }
 }
