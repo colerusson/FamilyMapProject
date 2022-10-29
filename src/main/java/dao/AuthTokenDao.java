@@ -1,7 +1,6 @@
 package dao;
 
 import model.AuthToken;
-import model.Event;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -80,7 +79,12 @@ public class AuthTokenDao {
      * @throws DataAccessException error in accessing the table
      */
     public boolean validate(String authToken) throws DataAccessException {
-        return false;
+        if (find(authToken) != null) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     /**
@@ -90,7 +94,22 @@ public class AuthTokenDao {
      * @throws DataAccessException error in accessing the table
      */
     public AuthToken getTokenByUsername(String username) throws DataAccessException {
-        return null;
+        AuthToken authtoken;
+        ResultSet rs;
+        String sql = "SELECT * FROM Authtoken WHERE username = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                authtoken = new AuthToken(rs.getString("authtoken"), rs.getString("username"));
+                return authtoken;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding an event in the database");
+        }
     }
 
     /**

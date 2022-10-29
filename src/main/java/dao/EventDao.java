@@ -144,11 +144,4 @@ public class EventDao {
     public void deleteRow() throws DataAccessException {
     }
 
-    /**
-     * method to delete the table
-     * @throws DataAccessException error in accessing the table
-     */
-    public void deleteTable() throws DataAccessException {
-    }
-
 }

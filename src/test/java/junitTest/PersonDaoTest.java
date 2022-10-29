@@ -1,5 +1,8 @@
-package dao;
+package junitTest;
 
+import dao.DataAccessException;
+import dao.Database;
+import dao.PersonDao;
 import model.Event;
 import model.Person;
 import model.User;
