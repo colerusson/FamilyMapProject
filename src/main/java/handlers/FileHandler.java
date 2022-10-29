@@ -2,7 +2,8 @@ package handlers;
 import java.io.*;
 import java.net.*;
 import com.sun.net.httpserver.*;
-public class ClearHandler implements HttpHandler {
+
+public class FileHandler implements HttpHandler {
     // Handles HTTP requests containing the "/games/list" URL path.
     // The "exchange" parameter is an HttpExchange object, which is
     // defined by Java.
@@ -123,4 +124,5 @@ public class ClearHandler implements HttpHandler {
         sw.write(str);
         sw.flush();
     }
+
 }
