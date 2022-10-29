@@ -4,7 +4,7 @@ import java.net.*;
 import com.sun.net.httpserver.*;
 
 public class LoadHandler implements HttpHandler {
-    // Handles HTTP requests containing the "/games/list" URL path.
+    // Handles HTTP requests containing the "/routes/claim" URL path.
     // The "exchange" parameter is an HttpExchange object, which is
     // defined by Java.
     // In this context, an "exchange" is an HTTP request/response pair
@@ -18,36 +18,33 @@ public class LoadHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
 
-        // This handler returns a list of "Ticket to Ride" games that
-        // are (ficticiously) currently running in the server.
-        // The game list is returned to the client in JSON format inside
-        // the HTTP response body.
+        // This handler allows a "Ticket to Ride" player to claim ability
+        // route between two cities (part of the Ticket to Ride game).
+        // The HTTP request body contains a JSON object indicating which
+        // route the caller wants to claim (a route is defined by two cities).
         // This implementation is clearly unrealistic, because it
-        // always returns the same hard-coded list of games.
+        // doesn't actually do anything other than print out the received JSON string.
         // It is also unrealistic in that it accepts only one specific
         // hard-coded auth token.
         // However, it does demonstrate the following:
         // 1. How to get the HTTP request type (or, "method")
         // 2. How to access HTTP request headers
-        // 3. How to return the desired status code (200, 404, etc.)
+        // 3. How to read JSON data from the HTTP request body
+        // 4. How to return the desired status code (200, 404, etc.)
         //		in an HTTP response
-        // 4. How to write JSON data to the HTTP response body
         // 5. How to check an incoming HTTP request for an auth token
 
         boolean success = false;
 
         try {
             // Determine the HTTP request type (GET, POST, etc.).
-            // Only allow GET requests for this operation.
-            // This operation requires a GET request, because the
-            // client is "getting" information from the server, and
-            // the operation is "read only" (i.e., does not modify the
-            // state of the server).
-            if (exchange.getRequestMethod().toLowerCase().equals("get")) {
+            // Only allow POST requests for this operation.
+            // This operation requires a POST request, because the
+            // client is "posting" information to the server for processing.
+            if (exchange.getRequestMethod().toLowerCase().equals("post")) {
 
                 // Get the HTTP request headers
                 Headers reqHeaders = exchange.getRequestHeaders();
-
                 // Check to see if an "Authorization" header is present
                 if (reqHeaders.containsKey("Authorization")) {
 
@@ -59,32 +56,38 @@ public class LoadHandler implements HttpHandler {
                     // auth tokens over time, not the same one all the time).
                     if (authToken.equals("afj232hj2332")) {
 
-                        // This is the JSON data we will return in the HTTP response body
-                        // (this is unrealistic because it always returns the same answer).
-                        String respData =
-                                "{ \"game-list\": [" +
-                                        "{ \"name\": \"fhe game\", \"player-count\": 3 }," +
-                                        "{ \"name\": \"work game\", \"player-count\": 4 }," +
-                                        "{ \"name\": \"church game\", \"player-count\": 2 }" +
-                                        "]" +
-                                        "}";
+                        // Extract the JSON string from the HTTP request body
+
+                        // Get the request body input stream
+                        InputStream reqBody = exchange.getRequestBody();
+
+                        // Read JSON string from the input stream
+                        String reqData = readString(reqBody);
+
+                        // Display/log the request JSON data
+                        System.out.println(reqData);
+
+                        // TODO: Claim a route based on the request data
+
+						/*
+						LoginRequest request = (LoginRequest)gson.fromJson(reqData, LoginRequest.class);
+
+						LoginService service = new LoginService();
+						LoginResult result = service.login(request);
+
+						exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+						OutputStream resBody = exchange.getResponseBody();
+						gson.toJson(result, resBody);
+						resBody.close();
+						*/
 
                         // Start sending the HTTP response to the client, starting with
                         // the status code and any defined headers.
                         exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 
-                        // Now that the status code and headers have been sent to the client,
-                        // next we send the JSON data in the HTTP response body.
-
-                        // Get the response body output stream.
-                        OutputStream respBody = exchange.getResponseBody();
-
-                        // Write the JSON string to the output stream.
-                        writeString(respData, respBody);
-
-                        // Close the output stream.  This is how Java knows we are done
-                        // sending data and the response is complete.
-                        respBody.close();
+                        // We are not sending a response body, so close the response body
+                        // output stream, indicating that the response is complete.
+                        exchange.getResponseBody().close();
 
                         success = true;
                     }
@@ -95,9 +98,9 @@ public class LoadHandler implements HttpHandler {
                 // The HTTP request was invalid somehow, so we return a "bad request"
                 // status code to the client.
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
-                // Since the client request was invalid, they will not receive the
-                // list of games, so we close the response body output stream,
-                // indicating that the response is complete.
+
+                // We are not sending a response body, so close the response body
+                // output stream, indicating that the response is complete.
                 exchange.getResponseBody().close();
             }
         }
@@ -106,9 +109,9 @@ public class LoadHandler implements HttpHandler {
             // client's fault), so we return an "internal server error" status code
             // to the client.
             exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
-            // Since the server is unable to complete the request, the client will
-            // not receive the list of games, so we close the response body output stream,
-            // indicating that the response is complete.
+
+            // We are not sending a response body, so close the response body
+            // output stream, indicating that the response is complete.
             exchange.getResponseBody().close();
 
             // Display/log the stack trace
@@ -117,12 +120,16 @@ public class LoadHandler implements HttpHandler {
     }
 
     /*
-        The writeString method shows how to write a String to an OutputStream.
+        The readString method shows how to read a String from an InputStream.
     */
-    private void writeString(String str, OutputStream os) throws IOException {
-        OutputStreamWriter sw = new OutputStreamWriter(os);
-        sw.write(str);
-        sw.flush();
+    private String readString(InputStream is) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        InputStreamReader sr = new InputStreamReader(is);
+        char[] buf = new char[1024];
+        int len;
+        while ((len = sr.read(buf)) > 0) {
+            sb.append(buf, 0, len);
+        }
+        return sb.toString();
     }
-
 }

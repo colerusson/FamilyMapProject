@@ -1,6 +1,8 @@
 package handlers;
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+
 import com.sun.net.httpserver.*;
 
 public class FileHandler implements HttpHandler {
@@ -44,57 +46,36 @@ public class FileHandler implements HttpHandler {
             // the operation is "read only" (i.e., does not modify the
             // state of the server).
             if (exchange.getRequestMethod().toLowerCase().equals("get")) {
-
                 // Get the HTTP request headers
-                Headers reqHeaders = exchange.getRequestHeaders();
-
+                String urlPath = exchange.getRequestURI().toString();
+                String filePath;
+                if (urlPath == null || urlPath == "/") {
+                    filePath = "web" + "/index.html";
+                }
+                else {
+                    filePath = "web" + urlPath;
+                }
+                File file = new File(filePath);
                 // Check to see if an "Authorization" header is present
-                if (reqHeaders.containsKey("Authorization")) {
+                if (file.exists()) {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 
-                    // Extract the auth token from the "Authorization" header
-                    String authToken = reqHeaders.getFirst("Authorization");
+                    OutputStream respBody = exchange.getResponseBody();
 
-                    // Verify that the auth token is the one we're looking for
-                    // (this is not realistic, because clients will use different
-                    // auth tokens over time, not the same one all the time).
-                    if (authToken.equals("afj232hj2332")) {
+                    Files.copy(file.toPath(), respBody);
 
-                        // This is the JSON data we will return in the HTTP response body
-                        // (this is unrealistic because it always returns the same answer).
-                        String respData =
-                                "{ \"game-list\": [" +
-                                        "{ \"name\": \"fhe game\", \"player-count\": 3 }," +
-                                        "{ \"name\": \"work game\", \"player-count\": 4 }," +
-                                        "{ \"name\": \"church game\", \"player-count\": 2 }" +
-                                        "]" +
-                                        "}";
+                    // Close the output stream.  This is how Java knows we are done
+                    // sending data and the response is complete.
+                    respBody.close();
 
-                        // Start sending the HTTP response to the client, starting with
-                        // the status code and any defined headers.
-                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-
-                        // Now that the status code and headers have been sent to the client,
-                        // next we send the JSON data in the HTTP response body.
-
-                        // Get the response body output stream.
-                        OutputStream respBody = exchange.getResponseBody();
-
-                        // Write the JSON string to the output stream.
-                        writeString(respData, respBody);
-
-                        // Close the output stream.  This is how Java knows we are done
-                        // sending data and the response is complete.
-                        respBody.close();
-
-                        success = true;
-                    }
+                    success = true;
                 }
             }
 
             if (!success) {
                 // The HTTP request was invalid somehow, so we return a "bad request"
                 // status code to the client.
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
                 // Since the client request was invalid, they will not receive the
                 // list of games, so we close the response body output stream,
                 // indicating that the response is complete.
@@ -114,15 +95,6 @@ public class FileHandler implements HttpHandler {
             // Display/log the stack trace
             e.printStackTrace();
         }
-    }
-
-    /*
-        The writeString method shows how to write a String to an OutputStream.
-    */
-    private void writeString(String str, OutputStream os) throws IOException {
-        OutputStreamWriter sw = new OutputStreamWriter(os);
-        sw.write(str);
-        sw.flush();
     }
 
 }
