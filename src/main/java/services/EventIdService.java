@@ -16,7 +16,7 @@ public class EventIdService {
 
     private Database db;
     private EventDao eDao;
-    Event event;
+    private Event event;
 
     /**
      * eventID method to actually run the request sent int from the user to get an event

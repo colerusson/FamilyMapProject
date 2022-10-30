@@ -22,7 +22,7 @@ public class EventService {
     private Database db;
     private EventDao eDao;
     private AuthTokenDao aDao;
-    Event[] events;
+    private Event[] events;
     /**
      * event method to actually run the request sent int from the user to get all events
      * @param eventRequest a request object sent in form the handler
