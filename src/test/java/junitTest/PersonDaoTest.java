@@ -94,4 +94,108 @@ public class PersonDaoTest {
         assertNull(notFoundTest);
     }
 
+    @Test
+    public void getPersonsForUserPass() throws DataAccessException {
+        pDao.insert(bestPerson);
+        Person newPerson = new Person("GeraldR86", "myUsername", "John",
+                "Rust", "m", "father45", "mother72",
+                "spouse123");
+        pDao.insert(newPerson);
+        Person newPerson2 = new Person("GeraldR87", "myUsername", "Katy",
+                "Rust", "f", "father46", "mother71",
+                "spouse1233");
+        pDao.insert(newPerson2);
+        int size = pDao.getPersonsForUser(bestPerson.getAssociatedUsername()).size();
+        assertEquals(3, size);
+    }
+
+    @Test
+    public void getPersonsForUserFail() throws DataAccessException {
+        pDao.insert(bestPerson);
+        Person newPerson = new Person("GeraldR86", "myUsername", "Gerald",
+                "Rust", "m", "father45", "mother72",
+                "spouse123");
+        pDao.insert(newPerson);
+        Person newPerson2 = new Person("GeraldR87", "notMyUsername", "Gerald",
+                "Rust", "m", "father45", "mother72",
+                "spouse123");
+        pDao.insert(newPerson2);
+        int size = pDao.getPersonsForUser(bestPerson.getAssociatedUsername()).size();
+        assertNotEquals(3, size);
+    }
+
+    @Test
+    public void getPersonsByGenderPass() throws DataAccessException {
+        pDao.insert(bestPerson);
+        Person newPerson = new Person("GeraldR86", "myUsername1", "Bob",
+                "Rust", "m", "father455", "mother772",
+                "spouse1623");
+        pDao.insert(newPerson);
+        Person newPerson2 = new Person("GeraldR87", "myUsername2", "Gary",
+                "Rust", "m", "father435", "mother752",
+                "spouse1233");
+        pDao.insert(newPerson2);
+        int size = pDao.getPersonsByGender(bestPerson.getGender()).size();
+        assertEquals(3, size);
+    }
+
+    @Test
+    public void getPersonsByGenderFail() throws DataAccessException {
+        pDao.insert(bestPerson);
+        Person newPerson = new Person("GeraldR86", "myUser", "Mike",
+                "Rust", "m", "father45", "mother72",
+                "spouse123");
+        pDao.insert(newPerson);
+        Person newPerson2 = new Person("GeraldR87", "myname", "Lucy",
+                "Rusty", "f", "father4t5", "mother7r2",
+                "spouse1e23");
+        pDao.insert(newPerson2);
+        int size = pDao.getPersonsByGender(bestPerson.getGender()).size();
+        assertNotEquals(3, size);
+    }
+
+    @Test
+    public void getPersonsByLastNamePass() throws DataAccessException {
+        pDao.insert(bestPerson);
+        Person newPerson = new Person("GeraldR86", "myUsername3", "Mary",
+                "Rust", "f", "father45", "mother72",
+                "spouse123");
+        pDao.insert(newPerson);
+        Person newPerson2 = new Person("GeraldR87", "myUsername5", "Lisa",
+                "Rust", "f", "father45", "mother72",
+                "spouse123");
+        pDao.insert(newPerson2);
+        int size = pDao.getPersonsByLastName(bestPerson.getLastName()).size();
+        assertEquals(3, size);
+    }
+
+    @Test
+    public void getPersonsByLastNameFail() throws DataAccessException {
+        pDao.insert(bestPerson);
+        Person newPerson = new Person("GeraldR86", "myUsername5", "Ron",
+                "Rust", "m", "father435", "mother725",
+                "spouse1236");
+        pDao.insert(newPerson);
+        Person newPerson2 = new Person("GeraldR87", "myUsername6", "Gerald",
+                "Rolls", "m", "father435", "mother723",
+                "spouse1223");
+        pDao.insert(newPerson2);
+        int size = pDao.getPersonsByLastName(bestPerson.getLastName()).size();
+        assertNotEquals(3, size);
+    }
+
+    @Test
+    public void deleteRowPass() throws DataAccessException {
+        pDao.insert(bestPerson);
+        pDao.deleteRow(bestPerson.getPersonID());
+        assertNull(pDao.find(bestPerson.getPersonID()));
+    }
+
+    @Test
+    public void deleteRowFail() throws DataAccessException {
+        pDao.clear();
+        pDao.deleteRow(bestPerson.getPersonID());
+        assertNull(pDao.find(bestPerson.getPersonID()));
+    }
+
 }

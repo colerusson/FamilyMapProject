@@ -101,4 +101,46 @@ public class AuthTokenDaoTest {
         AuthToken notFoundTest = aDao.find(bestAuthToken.getAuthtoken());
         assertNull(notFoundTest);
     }
+
+    @Test
+    public void validatePass() throws DataAccessException {
+        aDao.insert(bestAuthToken);
+        assertTrue(aDao.validate(bestAuthToken.getAuthtoken()));
+    }
+
+    @Test
+    public void validateFail() throws DataAccessException {
+        aDao.clear();
+        assertFalse(aDao.validate(bestAuthToken.getAuthtoken()));
+    }
+
+    @Test
+    public void getTokenByUsernamePass() throws DataAccessException {
+        aDao.insert(bestAuthToken);
+        AuthToken compareTest = aDao.getTokenByUsername(bestAuthToken.getUsername());
+        assertNotNull(compareTest);
+        assertEquals(bestAuthToken, compareTest);
+    }
+
+    @Test
+    public void getTokenByUsernameFail() throws DataAccessException {
+        aDao.clear();
+        // assert that null is returned when find is called
+        AuthToken notFoundTest = aDao.getTokenByUsername(bestAuthToken.getUsername());
+        assertNull(notFoundTest);
+    }
+
+    @Test
+    public void deletRowPass() throws DataAccessException {
+        aDao.insert(bestAuthToken);
+        aDao.deleteRow(bestAuthToken.getAuthtoken());
+        assertNull(aDao.find(bestAuthToken.getAuthtoken()));
+    }
+
+    @Test
+    public void deleteRowFail() throws DataAccessException {
+        aDao.clear();
+        aDao.deleteRow(bestAuthToken.getAuthtoken());
+        assertNull(aDao.find(bestAuthToken.getAuthtoken()));
+    }
 }

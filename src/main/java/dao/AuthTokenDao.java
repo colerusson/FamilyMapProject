@@ -121,7 +121,7 @@ public class AuthTokenDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataAccessException("Error encountered while deleting rows from the authotken table");
+            throw new DataAccessException("Error encountered while deleting rows from the authtoken table");
         }
     }
 

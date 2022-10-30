@@ -103,4 +103,138 @@ public class EventDaoTest {
         Event notFoundTest = eDao.find(bestEvent.getEventID());
         assertNull(notFoundTest);
     }
+
+    @Test
+    public void getEventsForUserPass() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Walking_123A", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Eating_123A", "Gale", "Ron123A",
+                38.9f, 145.1f, "England", "London",
+                "Eating_Around", 2015);
+        eDao.insert(newEvent2);
+        int size = eDao.getEventsForUser(bestEvent.getAssociatedUsername()).size();
+        assertEquals(3, size);
+    }
+
+    @Test
+    public void getEventsForUserFail() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Walking_123A", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Eating_123A", "Dale", "Ron123A",
+                38.9f, 145.1f, "England", "London",
+                "Eating_Around", 2015);
+        eDao.insert(newEvent2);
+        int size = eDao.getEventsForUser(bestEvent.getAssociatedUsername()).size();
+        assertNotEquals(3, size);
+    }
+
+    @Test
+    public void getEventsByTypePass() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Biking_123B", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Biking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Biking_123C", "Gale", "Rod123A",
+                37.9f, 145.1f, "England", "London",
+                "Biking_Around", 2012);
+        eDao.insert(newEvent2);
+        int size = eDao.getEventsByType(bestEvent.getEventType()).size();
+        assertEquals(3, size);
+    }
+
+    @Test
+    public void getEventsByTypeFail() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Biking_123B", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Biking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Biking_123C", "Gale", "Rod123A",
+                37.9f, 145.1f, "England", "London",
+                "Hiking_Around", 2012);
+        eDao.insert(newEvent2);
+        int size = eDao.getEventsByType(bestEvent.getEventType()).size();
+        assertNotEquals(3, size);
+    }
+
+    @Test
+    public void getEventsByYearPass() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Walking_123A", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2016);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Walking_123B", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2016);
+        eDao.insert(newEvent2);
+        int size = eDao.getEventsByYear(bestEvent.getYear()).size();
+        assertEquals(3, size);
+    }
+
+    @Test
+    public void getEventsByYearFail() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Walking_123A", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Walking_123B", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2016);
+        eDao.insert(newEvent2);
+        int size = eDao.getEventsByYear(bestEvent.getYear()).size();
+        assertNotEquals(3, size);
+    }
+
+    @Test
+    public void getEventsByCountryPass() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Walking_123A", "Gale", "Tod123A",
+                36.9f, 141.1f, "Japan", "Tokyo",
+                "Walking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Walking_123B", "Gale", "Tod123A",
+                36.9f, 141.1f, "Japan", "Tokyo",
+                "Walking_Around", 2016);
+        eDao.insert(newEvent2);
+        int size = eDao.getEventsByCountry(bestEvent.getCountry()).size();
+        assertEquals(3, size);
+    }
+
+    @Test
+    public void getEventsByCountryFail() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Walking_123A", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Walking_123B", "Gale", "Tod123A",
+                36.9f, 141.1f, "Japan", "Tokyo",
+                "Walking_Around", 2016);
+        eDao.insert(newEvent2);
+        int size = eDao.getEventsByCountry(bestEvent.getCountry()).size();
+        assertNotEquals(3, size);
+    }
+
+    @Test
+    public void deleteRowPass() throws DataAccessException {
+        eDao.insert(bestEvent);
+        eDao.deleteRow(bestEvent.getEventID());
+        assertNull(eDao.find(bestEvent.getEventID()));
+    }
+
+    @Test
+    public void deleteRowFail() throws DataAccessException {
+        eDao.clear();
+        eDao.deleteRow(bestEvent.getEventID());
+        assertNull(eDao.find(bestEvent.getEventID()));
+    }
 }
