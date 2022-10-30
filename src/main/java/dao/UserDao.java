@@ -61,7 +61,7 @@ public class UserDao {
      */
     public boolean validate(String username, String password) throws DataAccessException {
         if (find(username) != null) {
-            if (find(username).getPassword() == password) {
+            if (find(username).getPassword().equals(password)) {
                 return true;
             }
         }

@@ -106,4 +106,60 @@ public class UserDaoTest {
         assertNull(notFoundTest);
     }
 
+    @Test
+    public void validatePass() throws DataAccessException {
+        uDao.insert(bestUser);
+        assertTrue(uDao.validate(bestUser.getUsername(), bestUser.getPassword()));
+    }
+
+    @Test
+    public void validateFail() throws DataAccessException {
+        uDao.clear();
+        assertFalse(uDao.validate(bestUser.getUsername(), bestUser.getPassword()));
+    }
+
+    @Test
+    public void getUserByNamePass() throws DataAccessException {
+        uDao.insert(bestUser);
+        User compareTest = uDao.getUserByName(bestUser.getFirstName(), bestUser.getLastName());
+        assertNotNull(compareTest);
+        assertEquals(bestUser, compareTest);
+    }
+
+    @Test
+    public void getUserByNameFail() throws DataAccessException {
+        uDao.clear();
+        User nullTest = uDao.getUserByName(bestUser.getFirstName(), bestUser.getLastName());
+        assertNull(nullTest);
+    }
+
+    @Test
+    public void getUserByPersonIDPass() throws DataAccessException {
+        uDao.insert(bestUser);
+        User compareTest = uDao.getUserByPersonID(bestUser.getPersonID());
+        assertNotNull(compareTest);
+        assertEquals(bestUser, compareTest);
+    }
+
+    @Test
+    public void getUserByPersonIDFail() throws DataAccessException {
+        uDao.clear();
+        User nullTest = uDao.getUserByPersonID(bestUser.getPersonID());
+        assertNull(nullTest);
+    }
+
+    @Test
+    public void deleteRowPass() throws DataAccessException {
+        uDao.insert(bestUser);
+        uDao.deleteRow(bestUser.getUsername());
+        assertNull(uDao.find(bestUser.getUsername()));
+    }
+
+    @Test
+    public void deleteRowFail() throws DataAccessException {
+        uDao.clear();
+        uDao.deleteRow(bestUser.getUsername());
+        assertNull(uDao.find(bestUser.getUsername()));
+    }
+
 }
