@@ -1,7 +1,8 @@
 package services;
 
-import dao.DataAccessException;
-import dao.Database;
+import dao.*;
+import model.AuthToken;
+import model.User;
 import request.LoginRequest;
 import result.LoginResult;
 
@@ -13,6 +14,10 @@ import java.sql.Connection;
 public class LoginService {
 
     private Database db;
+    private AuthTokenDao aDao;
+    private UserDao uDao;
+    private User user;
+    private AuthToken authToken;
 
 
     /**
@@ -24,17 +29,36 @@ public class LoginService {
         db = new Database();
         Connection conn = db.getConnection();
 
+        aDao = new AuthTokenDao(conn);
+        uDao = new UserDao(conn);
+
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
 
+        LoginResult loginResult = new LoginResult();
 
+        if (uDao.validate(username, password)) {
+           user = uDao.find(username);
+           String personID = user.getPersonID();
+           String authTokenString = "generate-random-token";    // TODO: change this to generate random authtokens
+           authToken = new AuthToken(authTokenString, username);
+           if (aDao.validate(authTokenString)) {
+               aDao.deleteRow(authTokenString);
+           }
+           aDao.insert(authToken);
 
-
-
-
+           loginResult.setAuthtoken(authTokenString);
+           loginResult.setUsername(username);
+           loginResult.setPersonID(personID);
+           loginResult.setSuccess(true);
+        }
+        else {
+            loginResult.setSuccess(false);
+            loginResult.setMessage("Error, not valid login credentials");
+        }
 
         db.closeConnection(true);
 
-        return null;
+        return loginResult;
     }
 }

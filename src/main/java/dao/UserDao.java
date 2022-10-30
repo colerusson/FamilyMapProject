@@ -69,7 +69,7 @@ public class UserDao {
     }
 
     /**
-     * method to return the user based on userId
+     * method to return the user based on username
      * @param username the string ID of the desired user
      * @return a user method object
      * @throws DataAccessException error in accessing the table
@@ -94,6 +94,7 @@ public class UserDao {
             throw new DataAccessException("Error encountered while finding an event in the database");
         }
     }
+
 
     /**
      * method to return a user based on first and last name of user
