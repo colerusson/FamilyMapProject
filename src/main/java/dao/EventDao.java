@@ -133,7 +133,25 @@ public class EventDao {
      * @throws DataAccessException error in accessing the table
      */
     public List<Event> getEventsByType(String eventType) throws DataAccessException {
-        return null;
+        List<Event> events = new ArrayList<>();
+        Event event;
+        ResultSet rs;
+        String sql = "SELECT * FROM Event WHERE eventType = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, eventType);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
+                events.add(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while retrieving events in the database");
+        }
+        return events;
     }
 
     /**
@@ -143,7 +161,25 @@ public class EventDao {
      * @throws DataAccessException error in accessing the table
      */
     public List<Event> getEventsByYear(Integer year) throws DataAccessException {
-        return null;
+        List<Event> events = new ArrayList<>();
+        Event event;
+        ResultSet rs;
+        String sql = "SELECT * FROM Event WHERE year = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, year);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
+                events.add(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while retrieving events in the database");
+        }
+        return events;
     }
 
     /**
@@ -153,7 +189,25 @@ public class EventDao {
      * @throws DataAccessException error in accessing the table
      */
     public List<Event> getEventsByCountry(String country) throws DataAccessException {
-        return null;
+        List<Event> events = new ArrayList<>();
+        Event event;
+        ResultSet rs;
+        String sql = "SELECT * FROM Event WHERE country = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, country);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
+                events.add(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while retrieving events in the database");
+        }
+        return events;
     }
 
     /**

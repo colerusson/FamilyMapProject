@@ -60,6 +60,11 @@ public class UserDao {
      * @throws DataAccessException error in accessing the table
      */
     public boolean validate(String username, String password) throws DataAccessException {
+        if (find(username) != null) {
+            if (find(username).getPassword() == password) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -98,7 +103,25 @@ public class UserDao {
      * @throws DataAccessException error in accessing the table
      */
     public User getUserByName(String firstName, String lastName) throws DataAccessException {
-        return null;
+        User user;
+        ResultSet rs;
+        String sql = "SELECT * FROM User WHERE firstName = ? AND lastName = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                user = new User(rs.getString("username"), rs.getString("password"),
+                        rs.getString("email"), rs.getString("firstName"), rs.getString("lastName"),
+                        rs.getString("gender"), rs.getString("personID"));
+                return user;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding an event in the database");
+        }
     }
 
     /**
@@ -108,7 +131,24 @@ public class UserDao {
      * @throws DataAccessException error in accessing the table
      */
     public User getUserByPersonID(String personID) throws DataAccessException {
-        return null;
+        User user;
+        ResultSet rs;
+        String sql = "SELECT * FROM User WHERE personID = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, personID);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                user = new User(rs.getString("username"), rs.getString("password"),
+                        rs.getString("email"), rs.getString("firstName"), rs.getString("lastName"),
+                        rs.getString("gender"), rs.getString("personID"));
+                return user;
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while finding an event in the database");
+        }
     }
 
     /**

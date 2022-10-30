@@ -82,9 +82,7 @@ public class AuthTokenDao {
         if (find(authToken) != null) {
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /**

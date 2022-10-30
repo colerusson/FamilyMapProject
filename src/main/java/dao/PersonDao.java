@@ -1,11 +1,13 @@
 package dao;
 
+import model.Event;
 import model.Person;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -83,12 +85,29 @@ public class PersonDao {
 
     /**
      * method to return a list of all persons for the user
-     * @param username the string username of the user
+     * @param associatedUsername the string username of the user
      * @return a list object of Person method objects
      * @throws DataAccessException error in accessing the table
      */
-    public List<Person> getPersonsForUser(String username) throws DataAccessException {
-        return null;
+    public List<Person> getPersonsForUser(String associatedUsername) throws DataAccessException {
+        List<Person> persons = new ArrayList<>();
+        Person person;
+        ResultSet rs;
+        String sql = "SELECT * FROM Person WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, associatedUsername);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
+                        rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
+                        rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
+                persons.add(person);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while retrieving events in the database");
+        }
+        return persons;
     }
 
     /**
@@ -98,7 +117,24 @@ public class PersonDao {
      * @throws DataAccessException error in accessing the table
      */
     public List<Person> getPersonsByGender(String gender) throws DataAccessException {
-        return null;
+        List<Person> persons = new ArrayList<>();
+        Person person;
+        ResultSet rs;
+        String sql = "SELECT * FROM Person WHERE gender = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, gender);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
+                        rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
+                        rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
+                persons.add(person);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while retrieving events in the database");
+        }
+        return persons;
     }
 
     /**
@@ -108,7 +144,24 @@ public class PersonDao {
      * @throws DataAccessException error in accessing the table
      */
     public List<Person> getPersonsByLastName(String lastName) throws DataAccessException {
-        return null;
+        List<Person> persons = new ArrayList<>();
+        Person person;
+        ResultSet rs;
+        String sql = "SELECT * FROM Person WHERE lastName = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, lastName);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                person = new Person(rs.getString("personID"), rs.getString("associatedUsername"),
+                        rs.getString("firstName"), rs.getString("lastName"), rs.getString("gender"),
+                        rs.getString("fatherID"), rs.getString("motherID"), rs.getString("spouseID"));
+                persons.add(person);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while retrieving events in the database");
+        }
+        return persons;
     }
 
     /**
