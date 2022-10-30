@@ -227,8 +227,18 @@ public class EventDaoTest {
     @Test
     public void deleteRowPass() throws DataAccessException {
         eDao.insert(bestEvent);
+        Event newEvent = new Event("Walking_123A", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Eating_123A", "Gale", "Ron123A",
+                38.9f, 145.1f, "England", "London",
+                "Eating_Around", 2015);
+        eDao.insert(newEvent2);
         eDao.deleteRow(bestEvent.getEventID());
         assertNull(eDao.find(bestEvent.getEventID()));
+        assertNotNull(eDao.find(newEvent2.getEventID()));
+        assertEquals(2, eDao.getEventsForUser(newEvent.getAssociatedUsername()).size());
     }
 
     @Test
@@ -237,4 +247,23 @@ public class EventDaoTest {
         eDao.deleteRow(bestEvent.getEventID());
         assertNull(eDao.find(bestEvent.getEventID()));
     }
+
+    @Test
+    public void deleteEventsByUsernamePass() throws DataAccessException {
+        eDao.insert(bestEvent);
+        Event newEvent = new Event("Walking_123A", "Gale", "Tod123A",
+                36.9f, 141.1f, "USA", "Seattle",
+                "Walking_Around", 2015);
+        eDao.insert(newEvent);
+        Event newEvent2 = new Event("Eating_123A", "John", "Ron123A",
+                38.9f, 145.1f, "England", "London",
+                "Eating_Around", 2015);
+        eDao.insert(newEvent2);
+        eDao.deleteEventsByUsername(bestEvent.getAssociatedUsername());
+        assertNull(eDao.find(bestEvent.getAssociatedUsername()));
+        assertNull(eDao.find(newEvent.getAssociatedUsername()));
+        assertNotNull(eDao.find(newEvent2.getEventID()));
+        assertEquals(1, eDao.getEventsForUser(newEvent2.getAssociatedUsername()).size());
+    }
+
 }

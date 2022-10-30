@@ -187,8 +187,18 @@ public class PersonDaoTest {
     @Test
     public void deleteRowPass() throws DataAccessException {
         pDao.insert(bestPerson);
+        Person newPerson = new Person("GeraldR86", "myUsername", "Ron",
+                "Rust", "m", "father435", "mother725",
+                "spouse1236");
+        pDao.insert(newPerson);
+        Person newPerson2 = new Person("GeraldR87", "myUsername", "Gerald",
+                "Rolls", "m", "father435", "mother723",
+                "spouse1223");
+        pDao.insert(newPerson2);
         pDao.deleteRow(bestPerson.getPersonID());
         assertNull(pDao.find(bestPerson.getPersonID()));
+        assertNotNull(pDao.find(newPerson2.getPersonID()));
+        assertEquals(2, pDao.getPersonsForUser(newPerson2.getAssociatedUsername()).size());
     }
 
     @Test
@@ -196,6 +206,24 @@ public class PersonDaoTest {
         pDao.clear();
         pDao.deleteRow(bestPerson.getPersonID());
         assertNull(pDao.find(bestPerson.getPersonID()));
+    }
+
+    @Test
+    public void deletePersonssByUsernamePass() throws DataAccessException {
+        pDao.insert(bestPerson);
+        Person newPerson = new Person("GeraldR86", "myUsername", "Ron",
+                "Rust", "m", "father435", "mother725",
+                "spouse1236");
+        pDao.insert(newPerson);
+        Person newPerson2 = new Person("GeraldR87", "myUsername6", "Gerald",
+                "Rolls", "m", "father435", "mother723",
+                "spouse1223");
+        pDao.insert(newPerson2);
+        pDao.deletePersonsByUsername(bestPerson.getAssociatedUsername());
+        assertNull(pDao.find(bestPerson.getAssociatedUsername()));
+        assertNull(pDao.find(newPerson.getAssociatedUsername()));
+        assertNotNull(pDao.find(newPerson2.getPersonID()));
+        assertEquals(1, pDao.getPersonsForUser(newPerson2.getAssociatedUsername()).size());
     }
 
 }

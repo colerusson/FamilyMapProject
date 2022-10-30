@@ -169,7 +169,7 @@ public class PersonDao {
      * @throws DataAccessException error in accessing the table
      */
     public void deleteRow(String personID) throws DataAccessException {
-        String sql = "DELETE FROM person WHERE personID = ?";
+        String sql = "DELETE FROM Person WHERE personID = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, personID);
             stmt.executeUpdate();
@@ -190,6 +190,17 @@ public class PersonDao {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataAccessException("Error encountered while clearing the event table");
+        }
+    }
+
+    public void deletePersonsByUsername(String associatedUsername) throws DataAccessException {
+        String sql = "DELETE FROM Person WHERE associatedUsername = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, associatedUsername);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while deleting rows from the event table");
         }
     }
 

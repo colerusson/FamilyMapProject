@@ -215,9 +215,20 @@ public class EventDao {
      * @throws DataAccessException error in accessing the table
      */
     public void deleteRow(String eventID) throws DataAccessException {
-        String sql = "DELETE FROM event WHERE eventID = ?";
+        String sql = "DELETE FROM Event WHERE eventID = ?";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, eventID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while deleting rows from the event table");
+        }
+    }
+
+    public void deleteEventsByUsername(String associatedUsername) throws DataAccessException {
+        String sql = "DELETE FROM Event WHERE associatedUsername = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, associatedUsername);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
