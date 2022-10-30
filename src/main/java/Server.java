@@ -69,11 +69,11 @@ public class Server {
         // for processing.
 
         server.createContext("/clear", new ClearHandler());
-        server.createContext("/fill/[username]/{generations}", new FillHandler());
+        server.createContext("/fill/", new FillHandler());
         server.createContext("/load", new LoadHandler());
-        server.createContext("/person/[personID]", new PersonIdHandler());
+        server.createContext("/person/", new PersonIdHandler());
         server.createContext("/person", new PersonHandler());
-        server.createContext("/event/[eventID]", new EventIdHandler());
+        server.createContext("/event/", new EventIdHandler());
         server.createContext("/event", new EventHandler());
 
         // Create and install the "default" (or "file") HTTP handler.
