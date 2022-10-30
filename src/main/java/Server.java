@@ -60,21 +60,21 @@ public class Server {
         // "/games/list" URL path, it will forward the request to ListGamesHandler
         // for processing.
 
-//        server.createContext("/user/register", new RegisterHandler());
-//        server.createContext("/user/login", new LoginHandler());
+        server.createContext("/user/register", new RegisterHandler());
+        server.createContext("/user/login", new LoginHandler());
 
         // Create and install the HTTP handler for the "/routes/claim" URL path.
         // When the HttpServer receives an HTTP request containing the
         // "/routes/claim" URL path, it will forward the request to ClaimRouteHandler
         // for processing.
 
-//        server.createContext("/clear", new ClearHandler());
-//        server.createContext("/fill/[username]/{generations}", new FillHandler());
-//        server.createContext("/load", new LoadHandler());
-//        server.createContext("/person/[personID]", new PersonIdHandler());
-//        server.createContext("/person", new PersonHandler());
-//        server.createContext("/event/[eventID]", new EventIdHandler());
-//        server.createContext("/event", new EventHandler());
+        server.createContext("/clear", new ClearHandler());
+        server.createContext("/fill/[username]/{generations}", new FillHandler());
+        server.createContext("/load", new LoadHandler());
+        server.createContext("/person/[personID]", new PersonIdHandler());
+        server.createContext("/person", new PersonHandler());
+        server.createContext("/event/[eventID]", new EventIdHandler());
+        server.createContext("/event", new EventHandler());
 
         // Create and install the "default" (or "file") HTTP handler.
         // All requests that do not match the other handler URLs

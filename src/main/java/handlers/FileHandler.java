@@ -49,7 +49,7 @@ public class FileHandler implements HttpHandler {
                 // Get the HTTP request headers
                 String urlPath = exchange.getRequestURI().toString();
                 String filePath;
-                if (urlPath == null || urlPath == "/") {
+                if (urlPath == null || urlPath.equals("/") || urlPath.equals("")) {
                     filePath = "web" + "/index.html";
                 }
                 else {
