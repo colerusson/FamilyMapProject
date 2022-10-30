@@ -43,7 +43,7 @@ public class AuthTokenDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataAccessException("Error encountered while inserting an event into the database");
+            throw new DataAccessException("Error encountered while inserting an authtoken into the database");
         }
     }
 
@@ -67,7 +67,7 @@ public class AuthTokenDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataAccessException("Error encountered while finding an event in the database");
+            throw new DataAccessException("Error encountered while finding an authtoken in the database");
         }
 
     }
@@ -108,7 +108,7 @@ public class AuthTokenDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataAccessException("Error encountered while finding an event in the database");
+            throw new DataAccessException("Error encountered while finding an authtoken in the database");
         }
     }
 
@@ -116,7 +116,15 @@ public class AuthTokenDao {
      * method to delete a row in the table
      * @throws DataAccessException error in accessing the table
      */
-    public void deleteRow() throws DataAccessException {
+    public void deleteRow(String authtoken) throws DataAccessException {
+        String sql = "DELETE FROM Authtoken WHERE authtoken = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, authtoken);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while deleting rows from the authotken table");
+        }
     }
 
     /**
@@ -129,7 +137,7 @@ public class AuthTokenDao {
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DataAccessException("Error encountered while clearing the event table");
+            throw new DataAccessException("Error encountered while clearing the authtoken table");
         }
     }
 }

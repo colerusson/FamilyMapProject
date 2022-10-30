@@ -3,6 +3,7 @@ package dao;
 import model.Event;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,12 +100,30 @@ public class EventDao {
 
     /**
      * method to return a list of the events
-     * @param username string username of the user
+     * @param associatedUsername string username of the user
      * @return a List object of Event method objects from the table
      * @throws DataAccessException error in accessing the table
      */
-    public List<Event> getEventsForUser(String username) throws DataAccessException {
-        return null;
+    public List<Event> getEventsForUser(String associatedUsername) throws DataAccessException {
+        List<Event> events = new ArrayList<>();
+        Event event;
+        ResultSet rs;
+        String sql = "SELECT * FROM Event WHERE associatedUsername = ?;";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, associatedUsername);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                event = new Event(rs.getString("eventID"), rs.getString("associatedUsername"),
+                        rs.getString("personID"), rs.getFloat("latitude"), rs.getFloat("longitude"),
+                        rs.getString("country"), rs.getString("city"), rs.getString("eventType"),
+                        rs.getInt("year"));
+                events.add(event);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while retrieving events in the database");
+        }
+        return events;
     }
 
     /**
@@ -141,7 +160,15 @@ public class EventDao {
      * method to delete a row from the table
      * @throws DataAccessException error in accessing the table
      */
-    public void deleteRow() throws DataAccessException {
+    public void deleteRow(String eventID) throws DataAccessException {
+        String sql = "DELETE FROM event WHERE eventID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, eventID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while deleting rows from the event table");
+        }
     }
 
 }

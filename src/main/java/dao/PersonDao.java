@@ -115,7 +115,15 @@ public class PersonDao {
      * method to delete a row in the table
      * @throws DataAccessException error in accessing the table
      */
-    public void deleteRow() throws DataAccessException {
+    public void deleteRow(String personID) throws DataAccessException {
+        String sql = "DELETE FROM person WHERE personID = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, personID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while deleting rows from the person table");
+        }
     }
 
     /**

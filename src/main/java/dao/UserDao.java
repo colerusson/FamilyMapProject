@@ -115,7 +115,15 @@ public class UserDao {
      * method to delete a row in the table
      * @throws DataAccessException error in accessing the table
      */
-    public void deleteRow() throws DataAccessException {
+    public void deleteRow(String username) throws DataAccessException {
+        String sql = "DELETE FROM user WHERE username = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while deleting rows from the user table");
+        }
     }
 
     /**
