@@ -14,7 +14,6 @@ import java.util.Random;
 public class FamilyTree {
 
     public String generateFemaleNames(File file) throws Exception {
-        // make a method that generates family tree data
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -30,7 +29,6 @@ public class FamilyTree {
     }
 
     public String generateMaleNames(File file) throws Exception {
-        // make a method that generates family tree data
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -46,7 +44,6 @@ public class FamilyTree {
     }
 
     public String generateLastNames(File file) throws Exception {
-        // make a method that generates family tree data
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -62,7 +59,6 @@ public class FamilyTree {
     }
 
     public Location generateLocations(File file) throws Exception {
-        // TODO: make a method that generates family tree data
         try (FileReader fileReader = new FileReader(file)) {
 
             List<String> countries = new ArrayList<>();
