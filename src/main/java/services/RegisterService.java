@@ -6,10 +6,7 @@ import dao.Database;
 import dao.UserDao;
 import model.AuthToken;
 import model.User;
-import request.FillRequest;
-import request.LoginRequest;
 import request.RegisterRequest;
-import result.LoginResult;
 import result.RegisterResult;
 
 import java.sql.Connection;
@@ -74,15 +71,17 @@ public class RegisterService {
             db.closeConnection(true);
 
             RegisterResult registerResult = new RegisterResult();
-            registerResult.setAuthtoken(authTokenString);
-            registerResult.setUsername(username);
-            registerResult.setPersonID(personID);
-            registerResult.setSuccess(true);
 
             if (username == null || password == null || email == null || firstName == null || lastName == null || gender == null) {
                 registerResult.setSuccess(false);
                 registerResult.setMessage("Error: missing values");
                 return registerResult;
+            }
+            else {
+                registerResult.setAuthtoken(authTokenString);
+                registerResult.setUsername(username);
+                registerResult.setPersonID(personID);
+                registerResult.setSuccess(true);
             }
 
             return registerResult;

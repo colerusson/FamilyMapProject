@@ -18,7 +18,7 @@ public class LoadHandler implements HttpHandler {
             if (exchange.getRequestMethod().toLowerCase().equals("post")) {
                 Gson gson = new Gson();
                 HandlerHelper handlerHelper = new HandlerHelper();
-                String reqData = exchange.getRequestBody().toString();
+                String reqData = handlerHelper.readString(exchange.getRequestBody());
                 LoadRequest loadRequest = gson.fromJson(reqData, LoadRequest.class);
                 LoadService loadService = new LoadService();
                 LoadResult loadResult = loadService.load(loadRequest);

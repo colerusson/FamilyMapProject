@@ -18,7 +18,7 @@ public class LoginHandler implements HttpHandler {
             if (exchange.getRequestMethod().toLowerCase().equals("post")) {
                 Gson gson = new Gson();
                 HandlerHelper handlerHelper = new HandlerHelper();
-                String reqData = exchange.getRequestBody().toString();
+                String reqData = handlerHelper.readString(exchange.getRequestBody());
                 LoginRequest loginRequest = gson.fromJson(reqData, LoginRequest.class);
                 LoginService loginService = new LoginService();
                 LoginResult loginResult = loginService.login(loginRequest);

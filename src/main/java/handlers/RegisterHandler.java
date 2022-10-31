@@ -18,7 +18,7 @@ public class RegisterHandler implements HttpHandler {
             if (exchange.getRequestMethod().toLowerCase().equals("post")) {
                 Gson gson = new Gson();
                 HandlerHelper handlerHelper = new HandlerHelper();
-                String reqData = exchange.getRequestBody().toString();
+                String reqData = handlerHelper.readString(exchange.getRequestBody());
                 RegisterRequest registerRequest = gson.fromJson(reqData, RegisterRequest.class);
                 RegisterService registerService = new RegisterService();
                 RegisterResult registerResult = registerService.register(registerRequest);

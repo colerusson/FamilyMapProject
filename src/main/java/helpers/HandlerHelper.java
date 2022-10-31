@@ -3,7 +3,6 @@ package helpers;
 import java.io.*;
 
 public class HandlerHelper {
-
     /*
         The writeString method shows how to write a String to an OutputStream.
     */
@@ -49,7 +48,6 @@ public class HandlerHelper {
     // Display/log the request JSON data
     // System.out.println(reqData);
 
-    // TODO: Claim a route based on the request data
 
 						/*
 						LoginRequest request = (LoginRequest)gson.fromJson(reqData, LoginRequest.class);
