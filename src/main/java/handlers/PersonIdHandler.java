@@ -8,6 +8,7 @@ import dao.DataAccessException;
 import helpers.AuthtokenService;
 import helpers.HandlerHelper;
 import request.PersonIdRequest;
+import result.EventIdResult;
 import result.PersonIdResult;
 import services.PersonIdService;
 
@@ -31,7 +32,7 @@ public class PersonIdHandler implements HttpHandler {
                         PersonIdRequest personIdRequest = new PersonIdRequest();
                         personIdRequest.setPersonID(personId);
                         PersonIdService personIdService = new PersonIdService();
-                        PersonIdResult personIdResult = personIdService.personIdService(personIdRequest);
+                        PersonIdResult personIdResult = personIdService.personIdService(personIdRequest, authToken);
 
                         if (personIdResult.isSuccess()) {
                             exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -50,6 +51,20 @@ public class PersonIdHandler implements HttpHandler {
                         // sending data and the response is complete.
                         respBody.close();
                     }
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+
+                    PersonIdResult personIdResult = new PersonIdResult();
+                    HandlerHelper handlerHelper = new HandlerHelper();
+                    Gson gson = new Gson();
+
+                    personIdResult.setSuccess(false);
+                    personIdResult.setMessage("Error: Authtoken not found");
+                    String respData = gson.toJson(personIdResult);
+
+                    OutputStream respBody = exchange.getResponseBody();
+                    handlerHelper.writeString(respData, respBody);
                 }
             }
         }

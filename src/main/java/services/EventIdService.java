@@ -1,8 +1,10 @@
 package services;
 
+import dao.AuthTokenDao;
 import dao.DataAccessException;
 import dao.Database;
 import dao.EventDao;
+import model.AuthToken;
 import model.Event;
 import request.EventIdRequest;
 import result.EventIdResult;
@@ -16,24 +18,30 @@ public class EventIdService {
     private Database db;
     private EventDao eDao;
     private Event event;
+    private AuthTokenDao aDao;
+    private AuthToken authtoken;
 
     /**
      * eventID method to actually run the request sent int from the user to get an event
      * @param eventIdRequest a request object sent in form the handler
      * @return a register result object obtained from the result package classes
      */
-    public EventIdResult eventIdService(EventIdRequest eventIdRequest) throws DataAccessException {
+    public EventIdResult eventIdService(EventIdRequest eventIdRequest, String authToken) throws DataAccessException {
         db = new Database();
         try {
             Connection conn = db.getConnection();
             eDao = new EventDao(conn);
             event = eDao.find(eventIdRequest.getEventID());
+            aDao = new AuthTokenDao(conn);
+            String eventUser = event.getAssociatedUsername();
+            authtoken = aDao.find(authToken);
+            String authTokenUser = authtoken.getUsername();
 
             db.closeConnection(true);
 
             EventIdResult eventResult = new EventIdResult();
 
-            if (event != null) {
+            if (event != null && eventUser.equals(authTokenUser)) {
                 eventResult.setEventID(event.getEventID());
                 eventResult.setAssociatedUsername(event.getAssociatedUsername());
                 eventResult.setPersonID(event.getPersonID());

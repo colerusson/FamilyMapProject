@@ -31,7 +31,7 @@ public class EventIdHandler implements HttpHandler {
                         EventIdRequest eventIdRequest = new EventIdRequest();
                         eventIdRequest.setEventID(eventId);
                         EventIdService eventIdService = new EventIdService();
-                        EventIdResult eventIdResult = eventIdService.eventIdService(eventIdRequest);
+                        EventIdResult eventIdResult = eventIdService.eventIdService(eventIdRequest, authToken);
 
                         if (eventIdResult.isSuccess()) {
                             exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
@@ -50,6 +50,20 @@ public class EventIdHandler implements HttpHandler {
                         // sending data and the response is complete.
                         respBody.close();
                     }
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+
+                    EventIdResult eventIdResult = new EventIdResult();
+                    HandlerHelper handlerHelper = new HandlerHelper();
+                    Gson gson = new Gson();
+
+                    eventIdResult.setSuccess(false);
+                    eventIdResult.setMessage("Error: Authtoken not found");
+                    String respData = gson.toJson(eventIdResult);
+
+                    OutputStream respBody = exchange.getResponseBody();
+                    handlerHelper.writeString(respData, respBody);
                 }
             }
         }
