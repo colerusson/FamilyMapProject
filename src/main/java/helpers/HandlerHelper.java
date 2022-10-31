@@ -28,5 +28,47 @@ public class HandlerHelper {
     }
 
 
+    // String reqData = handlerHelper.readString(reqBody);
+
+
+    // RegisterRequest r = use gson.fromJson(reqData, RegisterRequest.class)
+
+    // RegisterResult rr = call service // declare new first
+
+    // check the success result first, if so then send HTTP OK header, if not, then send bad request
+
+    // call exchange.getRespBody()
+    // OutputStream resBody = exchange.getResponseBody();
+
+    // then after that, send results back to server with gson.toJson(rr) = returns strings result
+
+    // then call writeString(result, respBod)
+
+    //resBody.close();
+
+    // Display/log the request JSON data
+    // System.out.println(reqData);
+
+    // TODO: Claim a route based on the request data
+
+						/*
+						LoginRequest request = (LoginRequest)gson.fromJson(reqData, LoginRequest.class);
+
+						LoginService service = new LoginService();
+						LoginResult result = service.login(request);
+
+						exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+						OutputStream resBody = exchange.getResponseBody();
+						gson.toJson(result, resBody);
+						resBody.close();
+						*/
+
+    // Start sending the HTTP response to the client, starting with
+    // the status code and any defined headers.
+    // exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+
+    // We are not sending a response body, so close the response body
+    // output stream, indicating that the response is complete.
+    // exchange.getResponseBody().close();
 
 }
