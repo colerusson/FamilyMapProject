@@ -41,6 +41,12 @@ public class RegisterService {
 
         int generations = 4;
 
+        RegisterResult registerResult = new RegisterResult();
+        if (username == null || password == null || email == null || firstName == null || lastName == null || gender == null) {
+            registerResult.setSuccess(false);
+            registerResult.setMessage("Error: missing values");
+            return registerResult;
+        }
         // create a user account with the data
         user = new User(username, password, email, firstName, lastName, gender, null);
         uDao.insert(user);
@@ -59,15 +65,12 @@ public class RegisterService {
 
         loginRequest.setPassword(password);
         loginRequest.setUsername(username);
-        LoginResult loginResult = new LoginResult();
-        loginResult = loginService.login(loginRequest);
+        LoginResult loginResult = loginService.login(loginRequest);
 
-        RegisterResult registerResult = new RegisterResult();
         registerResult.setAuthtoken(loginResult.getAuthtoken());
         registerResult.setUsername(loginResult.getUsername());
         registerResult.setPersonID(loginResult.getPersonID());
         registerResult.setSuccess(loginResult.isSuccess());
-
 
         db.closeConnection(true);
 
