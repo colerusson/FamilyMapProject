@@ -69,4 +69,5 @@ public class LoginResult {
     public void setSuccess(boolean success) {
         this.success = success;
     }
+
 }
