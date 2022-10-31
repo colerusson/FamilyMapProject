@@ -7,13 +7,20 @@ import com.google.gson.JsonPrimitive;
 
 import java.io.File;
 import java.io.FileReader;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class FamilyTree {
+    private List<String> femaleNames = new ArrayList<>();
+    private List<String> maleNames = new ArrayList<>();
+    private List<String> lastNames = new ArrayList<>();
+    private List<Float> latitudes = new ArrayList<>();
+    private List<Float> longitudes = new ArrayList<>();
+    private List<String> countries = new ArrayList<>();
+    private List<String> cities = new ArrayList<>();
 
-    public String generateFemaleNames(File file) throws Exception {
+    public void generateFemaleNames(File file) throws Exception {
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -21,14 +28,14 @@ public class FamilyTree {
             JsonObject rootObj = (JsonObject)jsonParser.parse(fileReader);
 
             JsonArray nameArray = (JsonArray)rootObj.get("data");
-            int rnd = new Random().nextInt(nameArray.size());
-            String femaleName = nameArray.get(rnd).getAsString();
 
-            return femaleName;
+            for(int i = 0; i < nameArray.size(); ++i) {
+                femaleNames.add(nameArray.get(i).toString());
+            }
         }
     }
 
-    public String generateMaleNames(File file) throws Exception {
+    public void generateMaleNames(File file) throws Exception {
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -36,14 +43,13 @@ public class FamilyTree {
             JsonObject rootObj = (JsonObject)jsonParser.parse(fileReader);
 
             JsonArray nameArray = (JsonArray)rootObj.get("data");
-            int rnd = new Random().nextInt(nameArray.size());
-            String maleName = nameArray.get(rnd).getAsString();
-
-            return maleName;
+            for(int i = 0; i < nameArray.size(); ++i) {
+                maleNames.add(nameArray.get(i).toString());
+            }
         }
     }
 
-    public String generateLastNames(File file) throws Exception {
+    public void generateLastNames(File file) throws Exception {
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -51,20 +57,14 @@ public class FamilyTree {
             JsonObject rootObj = (JsonObject)jsonParser.parse(fileReader);
 
             JsonArray nameArray = (JsonArray)rootObj.get("data");
-            int rnd = new Random().nextInt(nameArray.size());
-            String lastName = nameArray.get(rnd).getAsString();
-
-            return lastName;
+            for(int i = 0; i < nameArray.size(); ++i) {
+                lastNames.add(nameArray.get(i).toString());
+            }
         }
     }
 
-    public Location generateLocations(File file) throws Exception {
+    public void generateLocations(File file) throws Exception {
         try (FileReader fileReader = new FileReader(file)) {
-
-            List<String> countries = new ArrayList<>();
-            List<String> cities = new ArrayList<>();
-            List<Float> latitudes = new ArrayList<>();
-            List<Float> longitudes = new ArrayList<>();
 
             JsonParser jsonParser = new JsonParser();
 
@@ -89,22 +89,27 @@ public class FamilyTree {
                 latitudes.add(latVal);
                 longitudes.add(longVal);
             }
-
-            int rnd = new Random().nextInt(nameArray.size());
-            String finalCountry = countries.get(rnd);
-            String finalCity = cities.get(rnd);
-            Float finalLat = latitudes.get(rnd);
-            Float finalLong = longitudes.get(rnd);
-
-            Location location = new Location(finalCountry, finalCity, finalLat, finalLong);
-
-            return location;
         }
     }
 
     public int generateYear() {
         // just generate a random int based on the level of the generation
         return 0;
+    }
+
+    public Event generateEvent(String eventType, int birthYear) {
+
+
+
+        return null;
+    }
+
+    public Person generatePerson(String gender, int generations, Connection conn) {
+
+
+
+
+        return null;
     }
 
 }

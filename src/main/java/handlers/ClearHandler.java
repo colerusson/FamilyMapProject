@@ -1,7 +1,15 @@
 package handlers;
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.*;
+
+import com.google.gson.Gson;
 import com.sun.net.httpserver.*;
+import dao.DataAccessException;
+import helpers.HandlerHelper;
+import result.ClearResult;
+import services.ClearService;
+
 public class ClearHandler implements HttpHandler {
     // Handles HTTP requests containing the "/routes/claim" URL path.
     // The "exchange" parameter is an HttpExchange object, which is
@@ -33,8 +41,6 @@ public class ClearHandler implements HttpHandler {
         //		in an HTTP response
         // 5. How to check an incoming HTTP request for an auth token
 
-        boolean success = false;
-
         try {
             // Determine the HTTP request type (GET, POST, etc.).
             // Only allow POST requests for this operation.
@@ -44,46 +50,57 @@ public class ClearHandler implements HttpHandler {
 
                 // Get the HTTP request headers
                 Headers reqHeaders = exchange.getRequestHeaders();
-                // Check to see if an "Authorization" header is present
-                if (reqHeaders.containsKey("Authorization")) {
 
-                    // Extract the auth token from the "Authorization" header
-                    String authToken = reqHeaders.getFirst("Authorization");
+                // Extract the JSON string from the HTTP request body
 
-                    // Verify that the auth token is the one we're looking for
-                    // (this is not realistic, because clients will use different
-                    // auth tokens over time, not the same one all the time).
-                    if (authToken.equals("afj232hj2332")) {
+                // Get the request body input stream
+                InputStream reqBody = exchange.getRequestBody();
 
-                        // Extract the JSON string from the HTTP request body
+                HandlerHelper handlerHelper = new HandlerHelper();
 
-                        // Get the request body input stream
-                        InputStream reqBody = exchange.getRequestBody();
+                // Read JSON string from the input stream
+                String reqData = handlerHelper.readString(reqBody);
 
-                        // Read JSON string from the input stream
-                        String reqData = readString(reqBody);
+                ClearService clearService = new ClearService();
 
+                ClearResult clearResult = clearService.clear();
 
+                if (clearResult.isSuccess()) {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
+                }
+                else {
+                    exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                }
 
-                        // RegisterRequest r = use gson.fromJson(reqData, RegisterRequest.class)
+                OutputStream resBody = exchange.getResponseBody();
 
-                        // RegisterResult rr = call service // declare new first
+                Gson gson = new Gson();
 
-                        // check the success result first, if so then send HTTP OK header, if not, then send bad request
+                String respData = gson.toJson((Object) clearResult, (Type) resBody);
 
-                        // call exchange.getRespBody()
-                        // OutputStream resBody = exchange.getResponseBody();
+                handlerHelper.writeString(respData, resBody);
 
-                        // then after that, send results back to server with gson.toJson(rr) = returns strings result
+                resBody.close();
 
-                        // then call writeString(result, respBod)
+                // RegisterRequest r = use gson.fromJson(reqData, RegisterRequest.class)
 
-                        //resBody.close();
+                // RegisterResult rr = call service // declare new first
 
-                        // Display/log the request JSON data
-                        System.out.println(reqData);
+                // check the success result first, if so then send HTTP OK header, if not, then send bad request
 
-                        // TODO: Claim a route based on the request data
+                // call exchange.getRespBody()
+                // OutputStream resBody = exchange.getResponseBody();
+
+                // then after that, send results back to server with gson.toJson(rr) = returns strings result
+
+                // then call writeString(result, respBod)
+
+                //resBody.close();
+
+                // Display/log the request JSON data
+                // System.out.println(reqData);
+
+                // TODO: Claim a route based on the request data
 
 						/*
 						LoginRequest request = (LoginRequest)gson.fromJson(reqData, LoginRequest.class);
@@ -97,28 +114,16 @@ public class ClearHandler implements HttpHandler {
 						resBody.close();
 						*/
 
-                        // Start sending the HTTP response to the client, starting with
-                        // the status code and any defined headers.
-                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
-
-                        // We are not sending a response body, so close the response body
-                        // output stream, indicating that the response is complete.
-                        exchange.getResponseBody().close();
-
-                        success = true;
-                    }
-                }
-            }
-
-            if (!success) {
-                // The HTTP request was invalid somehow, so we return a "bad request"
-                // status code to the client.
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+                // Start sending the HTTP response to the client, starting with
+                // the status code and any defined headers.
+                // exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK, 0);
 
                 // We are not sending a response body, so close the response body
                 // output stream, indicating that the response is complete.
-                exchange.getResponseBody().close();
+                // exchange.getResponseBody().close();
+
             }
+
         }
         catch (IOException e) {
             // Some kind of internal error has occurred inside the server (not the
@@ -132,20 +137,9 @@ public class ClearHandler implements HttpHandler {
 
             // Display/log the stack trace
             e.printStackTrace();
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    /*
-        The readString method shows how to read a String from an InputStream.
-    */
-    private String readString(InputStream is) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        InputStreamReader sr = new InputStreamReader(is);
-        char[] buf = new char[1024];
-        int len;
-        while ((len = sr.read(buf)) > 0) {
-            sb.append(buf, 0, len);
-        }
-        return sb.toString();
-    }
 }
