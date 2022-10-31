@@ -7,6 +7,7 @@ import request.LoginRequest;
 import result.LoginResult;
 
 import java.sql.Connection;
+import java.util.UUID;
 
 /**
  * request service class for login request, runs the functionality to actually perform the request
@@ -40,7 +41,8 @@ public class LoginService {
         if (uDao.validate(username, password)) {
            user = uDao.find(username);
            String personID = user.getPersonID();
-           String authTokenString = "generate-random-token";    // TODO: change this to generate random authtokens
+           UUID uuid = UUID.randomUUID();
+           String authTokenString = uuid.toString().substring(0, 8);
            authToken = new AuthToken(authTokenString, username);
            if (aDao.validate(authTokenString)) {
                aDao.deleteRow(authTokenString);
