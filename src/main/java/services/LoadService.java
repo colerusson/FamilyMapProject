@@ -33,14 +33,17 @@ public class LoadService {
             int usersLength = loadRequest.getUsers().length;
 
             for (int i = 0; i < eventsLength; ++i) {
+                //TODO: need to extract the data and add it to the event object first, then add that to the database
                 eDao.insert(loadRequest.getEvents()[i]);
             }
 
             for (int i = 0; i < personsLength; ++i) {
+                //TODO: need to extract the data and add it to the event object first, then add that to the database
                 pDao.insert(loadRequest.getPersons()[i]);
             }
 
             for (int i = 0; i < usersLength; ++i) {
+                //TODO: need to extract the data and add it to the event object first, then add that to the database
                 uDao.insert(loadRequest.getUsers()[i]);
             }
 

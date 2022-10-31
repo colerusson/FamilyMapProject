@@ -13,7 +13,6 @@ import java.sql.Connection;
  */
 public class FillService {
     private Database db;
-    private PersonDao pDao;
     /**
      * fill method to actually run the request and fill the map with data
      * @param fillRequest a request object sent in form the handler
@@ -23,7 +22,6 @@ public class FillService {
         db = new Database();
         try {
             Connection conn = db.getConnection();
-            pDao = new PersonDao(conn);
 
             int generations = fillRequest.getGenerations();
             String username = fillRequest.getUsername();

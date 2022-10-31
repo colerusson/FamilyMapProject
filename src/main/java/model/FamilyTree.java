@@ -106,6 +106,9 @@ public class FamilyTree {
         }
     }
 
-
+    public int generateYear() {
+        // just generate a random int based on the level of the generation
+        return 0;
+    }
 
 }
