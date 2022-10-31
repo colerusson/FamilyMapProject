@@ -16,7 +16,6 @@ import java.sql.Connection;
  * request service class for register request, runs the functionality to actually perform the request
  */
 public class RegisterService {
-
     private Database db;
     private UserDao uDao;
     private User user;
