@@ -46,7 +46,7 @@ public class ClearService {
 
             ClearResult clearResult = new ClearResult();
             clearResult.setSuccess(false);
-            clearResult.setMessage("Error: error message");
+            clearResult.setMessage("Error: Error");
             return clearResult;
         }
     }

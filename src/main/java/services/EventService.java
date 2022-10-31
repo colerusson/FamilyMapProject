@@ -40,8 +40,15 @@ public class EventService {
             db.closeConnection(true);
 
             EventResult eventResult = new EventResult();
-            eventResult.setData(events);
-            eventResult.setSuccess(true);
+
+            if (events != null) {
+                eventResult.setData(events);
+                eventResult.setSuccess(true);
+            }
+            else {
+                eventResult.setMessage("Error: Events not found");
+                eventResult.setSuccess(false);
+            }
 
             return eventResult;
 

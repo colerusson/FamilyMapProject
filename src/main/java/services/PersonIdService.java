@@ -46,7 +46,7 @@ public class PersonIdService {
             }
             else {
                 personResult.setSuccess(false);
-                personResult.setMessage("Error: TODO: figure out what error message to put");
+                personResult.setMessage("Error: Person not found");
             }
 
             return personResult;
@@ -57,7 +57,7 @@ public class PersonIdService {
 
             PersonIdResult personResult = new PersonIdResult();
             personResult.setSuccess(false);
-            personResult.setMessage("Error: error message");
+            personResult.setMessage("Error: Error");
             return personResult;
         }
     }

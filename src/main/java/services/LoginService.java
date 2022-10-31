@@ -37,6 +37,8 @@ public class LoginService {
             String authTokenString = null;
             String personID = null;
 
+            LoginResult loginResult = new LoginResult();
+
             if (uDao.validate(username, password)) {
                 user = uDao.find(username);
                 personID = user.getPersonID();
@@ -47,15 +49,17 @@ public class LoginService {
                     aDao.deleteRow(authTokenString);
                 }
                 aDao.insert(authToken);
+                loginResult.setAuthtoken(authTokenString);
+                loginResult.setUsername(username);
+                loginResult.setPersonID(personID);
+                loginResult.setSuccess(true);
+            }
+            else {
+                loginResult.setSuccess(false);
+                loginResult.setMessage("Error: User not found");
             }
 
             db.closeConnection(true);
-
-            LoginResult loginResult = new LoginResult();
-            loginResult.setAuthtoken(authTokenString);
-            loginResult.setUsername(username);
-            loginResult.setPersonID(personID);
-            loginResult.setSuccess(true);
 
             return loginResult;
 

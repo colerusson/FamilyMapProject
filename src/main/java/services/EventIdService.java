@@ -32,6 +32,7 @@ public class EventIdService {
             db.closeConnection(true);
 
             EventIdResult eventResult = new EventIdResult();
+
             if (event != null) {
                 eventResult.setEventID(event.getEventID());
                 eventResult.setAssociatedUsername(event.getAssociatedUsername());
@@ -46,7 +47,7 @@ public class EventIdService {
             }
             else {
                 eventResult.setSuccess(false);
-                eventResult.setMessage("Error: TODO: figure out what error to put here");
+                eventResult.setMessage("Error: Event not found");
             }
             return eventResult;
 
@@ -56,7 +57,7 @@ public class EventIdService {
 
             EventIdResult eventResult = new EventIdResult();
             eventResult.setSuccess(false);
-            eventResult.setMessage("Error: error message");
+            eventResult.setMessage("Error: Error");
             return eventResult;
         }
     }

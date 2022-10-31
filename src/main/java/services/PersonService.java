@@ -37,8 +37,15 @@ public class PersonService {
             db.closeConnection(true);
 
             PersonResult personResult = new PersonResult();
-            personResult.setData(persons);
-            personResult.setSuccess(true);
+
+            if (persons != null) {
+                personResult.setData(persons);
+
+            }
+            else {
+                personResult.setSuccess(false);
+                personResult.setMessage("Error: Persons not found");
+            }
 
             return personResult;
 
