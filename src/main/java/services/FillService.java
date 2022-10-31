@@ -30,8 +30,13 @@ public class FillService {
 
             // generate the person and event info for the user
             // then generate the person and event info for each successive parent for the number of generations
+            // user must already be present in database
+            // if there is any data already present with this user, delete the data
             // TODO: change this to generate random values for each based on xml sheet,
             //  calender function in java, random UMI strings in java
+
+
+
 
 
             db.closeConnection(true);

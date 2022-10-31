@@ -44,7 +44,9 @@ public class RegisterService {
             int generations = 4;
 
             // 1. create a user account with the data
-            user = new User(username, password, email, firstName, lastName, gender, null);
+            UUID uuid1 = UUID.randomUUID();
+            String personIDForUser = uuid1.toString().substring(0,8);
+            user = new User(username, password, email, firstName, lastName, gender, personIDForUser);
             uDao.insert(user);
 
             // TODO: call fill with generation value of 4 in family tree class
@@ -60,8 +62,8 @@ public class RegisterService {
             if (uDao.validate(username, password)) {
                 user = uDao.find(username);
                 personID = user.getPersonID();
-                UUID uuid = UUID.randomUUID();
-                authTokenString = uuid.toString().substring(0, 8);
+                UUID uuid2 = UUID.randomUUID();
+                authTokenString = uuid2.toString().substring(0, 8);
                 authToken = new AuthToken(authTokenString, username);
                 if (aDao.validate(authTokenString)) {
                     aDao.deleteRow(authTokenString);
