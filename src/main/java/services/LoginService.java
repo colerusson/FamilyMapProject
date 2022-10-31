@@ -13,14 +13,11 @@ import java.util.UUID;
  * request service class for login request, runs the functionality to actually perform the request
  */
 public class LoginService {
-
     private Database db;
     private AuthTokenDao aDao;
     private UserDao uDao;
     private User user;
     private AuthToken authToken;
-
-
     /**
      * login method to actually run the request sent int from the user to login
      * @param loginRequest a request object sent in form the handler
@@ -28,39 +25,48 @@ public class LoginService {
      */
     public LoginResult login(LoginRequest loginRequest) throws DataAccessException {
         db = new Database();
-        Connection conn = db.getConnection();
+        try {
+            Connection conn = db.getConnection();
 
-        aDao = new AuthTokenDao(conn);
-        uDao = new UserDao(conn);
+            aDao = new AuthTokenDao(conn);
+            uDao = new UserDao(conn);
 
-        String username = loginRequest.getUsername();
-        String password = loginRequest.getPassword();
+            String username = loginRequest.getUsername();
+            String password = loginRequest.getPassword();
 
-        LoginResult loginResult = new LoginResult();
+            String authTokenString = null;
+            String personID = null;
 
-        if (uDao.validate(username, password)) {
-           user = uDao.find(username);
-           String personID = user.getPersonID();
-           UUID uuid = UUID.randomUUID();
-           String authTokenString = uuid.toString().substring(0, 8);
-           authToken = new AuthToken(authTokenString, username);
-           if (aDao.validate(authTokenString)) {
-               aDao.deleteRow(authTokenString);
-           }
-           aDao.insert(authToken);
+            if (uDao.validate(username, password)) {
+                user = uDao.find(username);
+                personID = user.getPersonID();
+                UUID uuid = UUID.randomUUID();
+                authTokenString = uuid.toString().substring(0, 8);
+                authToken = new AuthToken(authTokenString, username);
+                if (aDao.validate(authTokenString)) {
+                    aDao.deleteRow(authTokenString);
+                }
+                aDao.insert(authToken);
+            }
 
-           loginResult.setAuthtoken(authTokenString);
-           loginResult.setUsername(username);
-           loginResult.setPersonID(personID);
-           loginResult.setSuccess(true);
-        }
-        else {
+            db.closeConnection(true);
+
+            LoginResult loginResult = new LoginResult();
+            loginResult.setAuthtoken(authTokenString);
+            loginResult.setUsername(username);
+            loginResult.setPersonID(personID);
+            loginResult.setSuccess(true);
+
+            return loginResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+
+            LoginResult loginResult = new LoginResult();
             loginResult.setSuccess(false);
-            loginResult.setMessage("Error, not valid login credentials");
+            loginResult.setMessage("Error, error message");
+            return loginResult;
         }
-
-        db.closeConnection(true);
-
-        return loginResult;
     }
 }

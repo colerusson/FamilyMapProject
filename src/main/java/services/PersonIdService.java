@@ -2,14 +2,10 @@ package services;
 
 import dao.DataAccessException;
 import dao.Database;
-import dao.EventDao;
 import dao.PersonDao;
-import model.Event;
 import model.Person;
 import request.PersonIdRequest;
-import request.RegisterRequest;
 import result.PersonIdResult;
-import result.RegisterResult;
 
 import java.sql.Connection;
 
@@ -17,7 +13,6 @@ import java.sql.Connection;
  * request service class for personID request, runs the functionality to actually perform the request
  */
 public class PersonIdService {
-
     private Database db;
     private PersonDao pDao;
     private Person person;
@@ -29,30 +24,41 @@ public class PersonIdService {
      */
     public PersonIdResult personIdService (PersonIdRequest personIdRequest) throws DataAccessException {
         db = new Database();
-        Connection conn = db.getConnection();
-        pDao = new PersonDao(conn);
-        person = pDao.find(personIdRequest.getPersonID());
+        try {
+            Connection conn = db.getConnection();
+            pDao = new PersonDao(conn);
+            person = pDao.find(personIdRequest.getPersonID());
 
-        PersonIdResult personResult = new PersonIdResult();
+            db.closeConnection(true);
 
-        if (person != null) {
-            personResult.setAssociatedUsername(person.getAssociatedUsername());
-            personResult.setPersonID(person.getPersonID());
-            personResult.setGender(person.getGender());
-            personResult.setFirstName(person.getFirstName());
-            personResult.setLastName(person.getLastName());
-            personResult.setFatherID(person.getFatherID());
-            personResult.setMessage(person.getMotherID());
-            personResult.setSpouseID(person.getSpouseID());
-            personResult.setSuccess(true);
-        }
-        else {
+            PersonIdResult personResult = new PersonIdResult();
+
+            if (person != null) {
+                personResult.setAssociatedUsername(person.getAssociatedUsername());
+                personResult.setPersonID(person.getPersonID());
+                personResult.setGender(person.getGender());
+                personResult.setFirstName(person.getFirstName());
+                personResult.setLastName(person.getLastName());
+                personResult.setFatherID(person.getFatherID());
+                personResult.setMessage(person.getMotherID());
+                personResult.setSpouseID(person.getSpouseID());
+                personResult.setSuccess(true);
+            }
+            else {
+                personResult.setSuccess(false);
+                personResult.setMessage("Error: TODO: figure out what error message to put");
+            }
+
+            return personResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+
+            PersonIdResult personResult = new PersonIdResult();
             personResult.setSuccess(false);
-            personResult.setMessage("Error: TODO: figure out what error message to put");
+            personResult.setMessage("Error: error message");
+            return personResult;
         }
-
-        db.closeConnection(true);
-
-        return personResult;
     }
 }

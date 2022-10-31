@@ -31,53 +31,68 @@ public class RegisterService {
      */
     public RegisterResult register(RegisterRequest registerRequest) throws DataAccessException {
         db = new Database();
-        Connection conn = db.getConnection();
-        uDao = new UserDao(conn);
+        try {
+            Connection conn = db.getConnection();
+            uDao = new UserDao(conn);
 
-        String username = registerRequest.getUsername();
-        String password = registerRequest.getPassword();
-        String email = registerRequest.getEmail();
-        String firstName = registerRequest.getFirstName();
-        String lastName = registerRequest.getLastName();
-        String gender = registerRequest.getGender();
+            String username = registerRequest.getUsername();
+            String password = registerRequest.getPassword();
+            String email = registerRequest.getEmail();
+            String firstName = registerRequest.getFirstName();
+            String lastName = registerRequest.getLastName();
+            String gender = registerRequest.getGender();
+            int generations = 4;
 
-        int generations = 4;
+            // 1. create a user account with the data
+            user = new User(username, password, email, firstName, lastName, gender, null);
+            uDao.insert(user);
 
-        RegisterResult registerResult = new RegisterResult();
-        if (username == null || password == null || email == null || firstName == null || lastName == null || gender == null) {
-            registerResult.setSuccess(false);
-            registerResult.setMessage("Error: missing values");
-            return registerResult;
-        }
-        // create a user account with the data
-        user = new User(username, password, email, firstName, lastName, gender, null);
-        uDao.insert(user);
-
-        // TODO: call fill with generation value of 4 in family tree class
-        // make sure to fill this user with personID and events first
+            // TODO: call fill with generation value of 4 in family tree class
+            // make sure to fill this user with personID and events first
 
 
-        // use similar login logic to login and return register result
-        if (uDao.validate(username, password)) {
-            user = uDao.find(username);
-            String personID = user.getPersonID();
-            UUID uuid = UUID.randomUUID();
-            String authTokenString = uuid.toString().substring(0, 8);
-            authToken = new AuthToken(authTokenString, username);
-            if (aDao.validate(authTokenString)) {
-                aDao.deleteRow(authTokenString);
+
+
+
+            // 3. use similar login logic to login and return register result
+            String personID = null;
+            String authTokenString = null;
+            if (uDao.validate(username, password)) {
+                user = uDao.find(username);
+                personID = user.getPersonID();
+                UUID uuid = UUID.randomUUID();
+                authTokenString = uuid.toString().substring(0, 8);
+                authToken = new AuthToken(authTokenString, username);
+                if (aDao.validate(authTokenString)) {
+                    aDao.deleteRow(authTokenString);
+                }
+                aDao.insert(authToken);
             }
-            aDao.insert(authToken);
 
+            db.closeConnection(true);
+
+            RegisterResult registerResult = new RegisterResult();
             registerResult.setAuthtoken(authTokenString);
             registerResult.setUsername(username);
             registerResult.setPersonID(personID);
             registerResult.setSuccess(true);
+
+            if (username == null || password == null || email == null || firstName == null || lastName == null || gender == null) {
+                registerResult.setSuccess(false);
+                registerResult.setMessage("Error: missing values");
+                return registerResult;
+            }
+
+            return registerResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+
+            RegisterResult registerResult = new RegisterResult();
+            registerResult.setSuccess(false);
+            registerResult.setMessage("Error: error message");
+            return registerResult;
         }
-
-        db.closeConnection(true);
-
-        return registerResult;
     }
-
 }

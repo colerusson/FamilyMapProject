@@ -13,7 +13,6 @@ import java.sql.Connection;
  * request service class for eventID request, runs the functionality to actually perform the request
  */
 public class EventIdService {
-
     private Database db;
     private EventDao eDao;
     private Event event;
@@ -25,31 +24,40 @@ public class EventIdService {
      */
     public EventIdResult eventIdService(EventIdRequest eventIdRequest) throws DataAccessException {
         db = new Database();
-        Connection conn = db.getConnection();
-        eDao = new EventDao(conn);
-        event = eDao.find(eventIdRequest.getEventID());
+        try {
+            Connection conn = db.getConnection();
+            eDao = new EventDao(conn);
+            event = eDao.find(eventIdRequest.getEventID());
 
-        EventIdResult eventResult = new EventIdResult();
+            db.closeConnection(true);
 
-        if (event != null) {
-            eventResult.setEventID(event.getEventID());
-            eventResult.setAssociatedUsername(event.getAssociatedUsername());
-            eventResult.setPersonID(event.getPersonID());
-            eventResult.setLatitude(event.getLatitude());
-            eventResult.setLongitude(event.getLongitude());
-            eventResult.setCountry(event.getCountry());
-            eventResult.setCity(event.getCity());
-            eventResult.setEventType(event.getEventType());
-            eventResult.setYear(event.getYear());
-            eventResult.setSuccess(true);
-        }
-        else {
+            EventIdResult eventResult = new EventIdResult();
+            if (event != null) {
+                eventResult.setEventID(event.getEventID());
+                eventResult.setAssociatedUsername(event.getAssociatedUsername());
+                eventResult.setPersonID(event.getPersonID());
+                eventResult.setLatitude(event.getLatitude());
+                eventResult.setLongitude(event.getLongitude());
+                eventResult.setCountry(event.getCountry());
+                eventResult.setCity(event.getCity());
+                eventResult.setEventType(event.getEventType());
+                eventResult.setYear(event.getYear());
+                eventResult.setSuccess(true);
+            }
+            else {
+                eventResult.setSuccess(false);
+                eventResult.setMessage("Error: TODO: figure out what error to put here");
+            }
+            return eventResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+
+            EventIdResult eventResult = new EventIdResult();
             eventResult.setSuccess(false);
-            eventResult.setMessage("Error: TODO: figure out what error to put here");
+            eventResult.setMessage("Error: error message");
+            return eventResult;
         }
-
-        db.closeConnection(true); // we don't have anything to write back to the database
-
-        return eventResult;
     }
 }

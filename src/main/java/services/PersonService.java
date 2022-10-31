@@ -2,12 +2,8 @@ package services;
 
 import dao.*;
 import model.AuthToken;
-import model.Event;
 import model.Person;
-import request.PersonIdRequest;
 import request.PersonRequest;
-import result.EventResult;
-import result.PersonIdResult;
 import result.PersonResult;
 
 import java.sql.Connection;
@@ -16,7 +12,6 @@ import java.sql.Connection;
  * request service class for person request, runs the functionality to actually perform the request
  */
 public class PersonService {
-
     private Database db;
     private PersonDao pDao;
     private AuthTokenDao aDao;
@@ -28,24 +23,33 @@ public class PersonService {
      */
     public PersonResult personService (PersonRequest personRequest) throws DataAccessException {
         db = new Database();
-        Connection conn = db.getConnection();
-        AuthToken authToken = aDao.find(personRequest.getAuthToken());
-        PersonResult personResult = new PersonResult();
+        try {
+            Connection conn = db.getConnection();
+            pDao = new PersonDao(conn);
+            aDao = new AuthTokenDao(conn);
+            AuthToken authToken = aDao.find(personRequest.getAuthToken());
 
-        if (authToken != null) {
-            String username = authToken.getUsername();
-            persons = pDao.getPersonsForUser(username).toArray(new Person[0]);
+            if (authToken != null) {
+                String username = authToken.getUsername();
+                persons = pDao.getPersonsForUser(username).toArray(new Person[0]);
+            }
 
+            db.closeConnection(true);
+
+            PersonResult personResult = new PersonResult();
             personResult.setData(persons);
             personResult.setSuccess(true);
-        }
-        else {
+
+            return personResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+
+            PersonResult personResult = new PersonResult();
             personResult.setSuccess(false);
             personResult.setMessage("Error: TODO: figure out error message");
+            return  personResult;
         }
-
-        db.closeConnection(true);
-
-        return personResult;
     }
 }

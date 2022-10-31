@@ -21,41 +21,52 @@ public class LoadService {
      */
     public LoadResult load(LoadRequest loadRequest) throws DataAccessException {
         db = new Database();
-        Connection conn = db.getConnection();
+        try {
+            Connection conn = db.getConnection();
 
-        eDao = new EventDao(conn);
-        pDao = new PersonDao(conn);
-        uDao = new UserDao(conn);
+            eDao = new EventDao(conn);
+            pDao = new PersonDao(conn);
+            uDao = new UserDao(conn);
 
-        int eventsLength = loadRequest.getEvents().length;
-        int personsLength = loadRequest.getPersons().length;
-        int usersLength = loadRequest.getUsers().length;
+            int eventsLength = loadRequest.getEvents().length;
+            int personsLength = loadRequest.getPersons().length;
+            int usersLength = loadRequest.getUsers().length;
 
-        for (int i = 0; i < eventsLength; ++i) {
-            eDao.insert(loadRequest.getEvents()[i]);
-        }
+            for (int i = 0; i < eventsLength; ++i) {
+                eDao.insert(loadRequest.getEvents()[i]);
+            }
 
-        for (int i = 0; i < personsLength; ++i) {
-            pDao.insert(loadRequest.getPersons()[i]);
-        }
+            for (int i = 0; i < personsLength; ++i) {
+                pDao.insert(loadRequest.getPersons()[i]);
+            }
 
-        for (int i = 0; i < usersLength; ++i) {
-            uDao.insert(loadRequest.getUsers()[i]);
-        }
+            for (int i = 0; i < usersLength; ++i) {
+                uDao.insert(loadRequest.getUsers()[i]);
+            }
 
-        LoadResult loadResult = new LoadResult();
-        if (eventsLength > 0 && personsLength > 0 && usersLength > 0) {
-            loadResult.setMessage("Successfully added " + usersLength + " users, " + personsLength + " persons, and "
-                    + eventsLength + " events to the database.");
-            loadResult.setSuccess(true);
-        }
-        else {
+            db.closeConnection(true);
+
+            LoadResult loadResult = new LoadResult();
+            if (eventsLength > 0 && personsLength > 0 && usersLength > 0) {
+                loadResult.setMessage("Successfully added " + usersLength + " users, " + personsLength + " persons, and "
+                        + eventsLength + " events to the database.");
+                loadResult.setSuccess(true);
+            }
+            else {
+                loadResult.setSuccess(false);
+                loadResult.setMessage("Error: Missing needed data");
+            }
+
+            return loadResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+
+            LoadResult loadResult = new LoadResult();
             loadResult.setSuccess(false);
-            loadResult.setMessage("Error: Missing needed data.");
+            loadResult.setMessage("Error: error message");
+            return loadResult;
         }
-
-        db.closeConnection(true);
-
-        return loadResult;
     }
 }

@@ -14,7 +14,6 @@ import java.sql.Connection;
 public class FillService {
     private Database db;
     private PersonDao pDao;
-
     /**
      * fill method to actually run the request and fill the map with data
      * @param fillRequest a request object sent in form the handler
@@ -22,21 +21,35 @@ public class FillService {
      */
     public FillResult fill(FillRequest fillRequest) throws DataAccessException {
         db = new Database();
-        Connection conn = db.getConnection();
-        pDao = new PersonDao(conn);
+        try {
+            Connection conn = db.getConnection();
+            pDao = new PersonDao(conn);
 
-        int generations = fillRequest.getGenerations();
-        String username = fillRequest.getUsername();
+            int generations = fillRequest.getGenerations();
+            String username = fillRequest.getUsername();
 
-        // generate the person and event info for the user
-        // then generate the person and event info for each successive parent for the number of generations
-        // TODO: change this to generate random values for each based on xml sheet,
-        //  calender function in java, random UMI strings in java
+            // generate the person and event info for the user
+            // then generate the person and event info for each successive parent for the number of generations
+            // TODO: change this to generate random values for each based on xml sheet,
+            //  calender function in java, random UMI strings in java
 
 
+            db.closeConnection(true);
 
-        db.closeConnection(true);
+            FillResult fillResult = new FillResult();
+            fillResult.setSuccess(true);
+            // add other things to message
 
-        return null;
+            return fillResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+
+            FillResult fillResult = new FillResult();
+            fillResult.setSuccess(false);
+            fillResult.setMessage("Error: error message");
+            return fillResult;
+        }
     }
 }

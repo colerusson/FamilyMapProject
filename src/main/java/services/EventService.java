@@ -9,16 +9,13 @@ import model.Event;
 import request.EventRequest;
 import result.EventResult;
 
-import java.sql.Array;
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * request service class for event request, runs the functionality to actually perform the request
  */
 public class EventService {
-
     private Database db;
     private EventDao eDao;
     private AuthTokenDao aDao;
@@ -30,25 +27,32 @@ public class EventService {
      */
     public EventResult eventService(EventRequest eventRequest) throws DataAccessException {
         db = new Database();
-        Connection conn = db.getConnection();
-        eDao = new EventDao(conn);
-        AuthToken authToken = aDao.find(eventRequest.getAuthToken());
-        EventResult eventResult = new EventResult();
+        try {
+            Connection conn = db.getConnection();
+            eDao = new EventDao(conn);
+            aDao = new AuthTokenDao(conn);
+            AuthToken authToken = aDao.find(eventRequest.getAuthToken());
 
-        if (authToken != null) {
-            String username = authToken.getUsername();
-            events = eDao.getEventsForUser(username).toArray(new Event[0]);
+            if (authToken != null) {
+                String username = authToken.getUsername();
+                events = eDao.getEventsForUser(username).toArray(new Event[0]);
+            }
+            db.closeConnection(true);
 
+            EventResult eventResult = new EventResult();
             eventResult.setData(events);
             eventResult.setSuccess(true);
-        }
-        else {
+
+            return eventResult;
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            db.closeConnection(false);
+
+            EventResult eventResult = new EventResult();
             eventResult.setSuccess(false);
-            eventResult.setMessage("Error: TODO: figure out error message");
+            eventResult.setMessage("Error: error message");
+            return eventResult;
         }
-
-        db.closeConnection(true);
-
-        return eventResult;
     }
 }
