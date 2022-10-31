@@ -8,6 +8,7 @@ import dao.DataAccessException;
 import helpers.AuthtokenService;
 import helpers.HandlerHelper;
 import request.PersonRequest;
+import result.PersonIdResult;
 import result.PersonResult;
 import services.PersonService;
 
@@ -50,6 +51,36 @@ public class PersonHandler implements HttpHandler {
                             // sending data and the response is complete.
                             respBody.close();
                         }
+                        else {
+                            exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+
+                            PersonResult personResult = new PersonResult();
+                            HandlerHelper handlerHelper = new HandlerHelper();
+                            Gson gson = new Gson();
+
+                            personResult.setSuccess(false);
+                            personResult.setMessage("Error: Authtoken not valid");
+                            String respData = gson.toJson(personResult);
+
+                            OutputStream respBody = exchange.getResponseBody();
+                            handlerHelper.writeString(respData, respBody);
+                            respBody.close();
+                        }
+                    }
+                    else {
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+
+                        PersonResult personResult = new PersonResult();
+                        HandlerHelper handlerHelper = new HandlerHelper();
+                        Gson gson = new Gson();
+
+                        personResult.setSuccess(false);
+                        personResult.setMessage("Error: Authtoken not found in request");
+                        String respData = gson.toJson(personResult);
+
+                        OutputStream respBody = exchange.getResponseBody();
+                        handlerHelper.writeString(respData, respBody);
+                        respBody.close();
                     }
                 }
             }

@@ -33,25 +33,33 @@ public class EventIdService {
             eDao = new EventDao(conn);
             event = eDao.find(eventIdRequest.getEventID());
             aDao = new AuthTokenDao(conn);
-            String eventUser = event.getAssociatedUsername();
-            authtoken = aDao.find(authToken);
-            String authTokenUser = authtoken.getUsername();
+
+            String eventUser = null;
+            String authTokenUser = null;
+
+            if (event != null) {
+                eventUser = event.getAssociatedUsername();
+                authtoken = aDao.find(authToken);
+                authTokenUser = authtoken.getUsername();
+            }
 
             db.closeConnection(true);
 
             EventIdResult eventResult = new EventIdResult();
 
-            if (event != null && eventUser.equals(authTokenUser)) {
-                eventResult.setEventID(event.getEventID());
-                eventResult.setAssociatedUsername(event.getAssociatedUsername());
-                eventResult.setPersonID(event.getPersonID());
-                eventResult.setLatitude(event.getLatitude());
-                eventResult.setLongitude(event.getLongitude());
-                eventResult.setCountry(event.getCountry());
-                eventResult.setCity(event.getCity());
-                eventResult.setEventType(event.getEventType());
-                eventResult.setYear(event.getYear());
-                eventResult.setSuccess(true);
+            if (eventUser != null && authTokenUser != null) {
+                if (eventUser.equals(authTokenUser)) {
+                    eventResult.setEventID(event.getEventID());
+                    eventResult.setAssociatedUsername(event.getAssociatedUsername());
+                    eventResult.setPersonID(event.getPersonID());
+                    eventResult.setLatitude(event.getLatitude());
+                    eventResult.setLongitude(event.getLongitude());
+                    eventResult.setCountry(event.getCountry());
+                    eventResult.setCity(event.getCity());
+                    eventResult.setEventType(event.getEventType());
+                    eventResult.setYear(event.getYear());
+                    eventResult.setSuccess(true);
+                }
             }
             else {
                 eventResult.setSuccess(false);

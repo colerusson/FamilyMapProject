@@ -33,24 +33,32 @@ public class PersonIdService {
             pDao = new PersonDao(conn);
             person = pDao.find(personIdRequest.getPersonID());
             aDao = new AuthTokenDao(conn);
-            String personUser = person.getAssociatedUsername();
-            authtoken = aDao.find(authToken);
-            String authTokenUser = authtoken.getUsername();
+
+            String personUser = null;
+            String authTokenUser = null;
+
+            if (person != null) {
+                personUser = person.getAssociatedUsername();
+                authtoken = aDao.find(authToken);
+                authTokenUser = authtoken.getUsername();
+            }
 
             db.closeConnection(true);
 
             PersonIdResult personResult = new PersonIdResult();
 
-            if (person != null && personUser.equals(authTokenUser)) {
-                personResult.setAssociatedUsername(person.getAssociatedUsername());
-                personResult.setPersonID(person.getPersonID());
-                personResult.setGender(person.getGender());
-                personResult.setFirstName(person.getFirstName());
-                personResult.setLastName(person.getLastName());
-                personResult.setFatherID(person.getFatherID());
-                personResult.setMessage(person.getMotherID());
-                personResult.setSpouseID(person.getSpouseID());
-                personResult.setSuccess(true);
+            if (personUser != null && authTokenUser != null) {
+                if (personUser.equals(authTokenUser)) {
+                    personResult.setAssociatedUsername(person.getAssociatedUsername());
+                    personResult.setPersonID(person.getPersonID());
+                    personResult.setGender(person.getGender());
+                    personResult.setFirstName(person.getFirstName());
+                    personResult.setLastName(person.getLastName());
+                    personResult.setFatherID(person.getFatherID());
+                    personResult.setMessage(person.getMotherID());
+                    personResult.setSpouseID(person.getSpouseID());
+                    personResult.setSuccess(true);
+                }
             }
             else {
                 personResult.setSuccess(false);

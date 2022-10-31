@@ -9,6 +9,7 @@ import helpers.AuthtokenService;
 import helpers.HandlerHelper;
 import request.EventIdRequest;
 import result.EventIdResult;
+import result.PersonIdResult;
 import services.EventIdService;
 
 public class EventIdHandler implements HttpHandler {
@@ -50,20 +51,36 @@ public class EventIdHandler implements HttpHandler {
                         // sending data and the response is complete.
                         respBody.close();
                     }
+                    else {
+                        exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
+
+                        EventIdResult eventIdResult = new EventIdResult();
+                        HandlerHelper handlerHelper = new HandlerHelper();
+                        Gson gson = new Gson();
+
+                        eventIdResult.setSuccess(false);
+                        eventIdResult.setMessage("Error: Authtoken not valid");
+                        String respData = gson.toJson(eventIdResult);
+
+                        OutputStream respBody = exchange.getResponseBody();
+                        handlerHelper.writeString(respData, respBody);
+                        respBody.close();
+                    }
                 }
                 else {
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_BAD_REQUEST, 0);
 
-                    EventIdResult eventIdResult = new EventIdResult();
+                    PersonIdResult personIdResult = new PersonIdResult();
                     HandlerHelper handlerHelper = new HandlerHelper();
                     Gson gson = new Gson();
 
-                    eventIdResult.setSuccess(false);
-                    eventIdResult.setMessage("Error: Authtoken not found");
-                    String respData = gson.toJson(eventIdResult);
+                    personIdResult.setSuccess(false);
+                    personIdResult.setMessage("Error: Authtoken not found in request");
+                    String respData = gson.toJson(personIdResult);
 
                     OutputStream respBody = exchange.getResponseBody();
                     handlerHelper.writeString(respData, respBody);
+                    respBody.close();
                 }
             }
         }
