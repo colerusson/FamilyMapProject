@@ -63,6 +63,23 @@ public class ClearHandler implements HttpHandler {
                         // Read JSON string from the input stream
                         String reqData = readString(reqBody);
 
+
+
+                        // RegisterRequest r = use gson.fromJson(reqData, RegisterRequest.class)
+
+                        // RegisterResult rr = call service // declare new first
+
+                        // check the success result first, if so then send HTTP OK header, if not, then send bad request
+
+                        // call exchange.getRespBody()
+                        // OutputStream resBody = exchange.getResponseBody();
+
+                        // then after that, send results back to server with gson.toJson(rr) = returns strings result
+
+                        // then call writeString(result, respBod)
+
+                        //resBody.close();
+
                         // Display/log the request JSON data
                         System.out.println(reqData);
 

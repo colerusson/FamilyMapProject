@@ -79,7 +79,7 @@ public class EventHandler implements HttpHandler {
                         OutputStream respBody = exchange.getResponseBody();
 
                         // Write the JSON string to the output stream.
-                        writeString(respData, respBody);
+                        writeString(respData, respBody); // function to write the string of response data back to server
 
                         // Close the output stream.  This is how Java knows we are done
                         // sending data and the response is complete.
