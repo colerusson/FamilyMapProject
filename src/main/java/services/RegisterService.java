@@ -6,6 +6,7 @@ import dao.Database;
 import dao.UserDao;
 import model.AuthToken;
 import model.User;
+import request.FillRequest;
 import request.RegisterRequest;
 import result.RegisterResult;
 
@@ -46,13 +47,13 @@ public class RegisterService {
             user = new User(username, password, email, firstName, lastName, gender, personIDForUser);
             uDao.insert(user);
 
-            // TODO: call fill with generation value of 4 in family tree class
-            // make sure to fill this user with personID and events first
+            db.closeConnection(true);
 
+            FillRequest fillRequest = new FillRequest();
+            fillRequest.setGenerations(4);
+            fillRequest.setUsername(username);
 
-
-
-
+            db.getConnection();
             // 3. use similar login logic to login and return register result
             String personID = null;
             String authTokenString = null;

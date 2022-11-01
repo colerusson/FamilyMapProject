@@ -10,6 +10,8 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class FamilyTree {
     private List<String> femaleNames = new ArrayList<>();
@@ -21,6 +23,7 @@ public class FamilyTree {
     private List<String> cities = new ArrayList<>();
 
     public void generateFemaleNames(File file) throws Exception {
+        femaleNames.clear();
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -36,6 +39,7 @@ public class FamilyTree {
     }
 
     public void generateMaleNames(File file) throws Exception {
+        maleNames.clear();
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -50,6 +54,7 @@ public class FamilyTree {
     }
 
     public void generateLastNames(File file) throws Exception {
+        lastNames.clear();
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -64,6 +69,10 @@ public class FamilyTree {
     }
 
     public void generateLocations(File file) throws Exception {
+        countries.clear();
+        cities.clear();
+        latitudes.clear();
+        longitudes.clear();
         try (FileReader fileReader = new FileReader(file)) {
 
             JsonParser jsonParser = new JsonParser();
@@ -92,24 +101,38 @@ public class FamilyTree {
         }
     }
 
-    public int generateYear() {
-        // just generate a random int based on the level of the generation
-        return 0;
+    public Event generateEvent(int year, String username, String personID, String eventType) {
+        Event event = new Event();
+        event.setEventID(UUID.randomUUID().toString());
+        int locationIndex = new Random().nextInt(countries.size());
+        event.setCountry(countries.get(locationIndex));
+        event.setCity(cities.get(locationIndex));
+        event.setLatitude(latitudes.get(locationIndex));
+        event.setLongitude(longitudes.get(locationIndex));
+        event.setPersonID(personID);
+        event.setAssociatedUsername(username);
+        event.setYear(year);
+        event.setEventType(eventType);
+
+        return event;
     }
 
-    public Event generateEvent(String eventType, int birthYear) {
+    public String getName(String nameType) {
+        String name = null;
+        if (nameType.equals("f")) {
+            int nameIndex = new Random().nextInt(femaleNames.size());
+            name = femaleNames.get(nameIndex);
+        }
+        else if (nameType.equals("m")) {
+            int nameIndex = new Random().nextInt(maleNames.size());
+            name = maleNames.get(nameIndex);
+        }
+        else if (nameType.equals("l")) {
+            int nameIndex = new Random().nextInt(lastNames.size());
+            name = lastNames.get(nameIndex);
+        }
 
-
-
-        return null;
-    }
-
-    public Person generatePerson(String gender, int generations, Connection conn) {
-
-
-
-
-        return null;
+        return name;
     }
 
 }

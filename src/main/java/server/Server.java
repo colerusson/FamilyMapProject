@@ -1,3 +1,5 @@
+package server;
+
 import java.io.*;
 import java.net.*;
 import com.sun.net.httpserver.*;
@@ -9,7 +11,7 @@ public class Server {
     private HttpServer server;
     private void run(String portNumber) {
 
-        System.out.println("Initializing HTTP Server");
+        System.out.println("Initializing HTTP server.Server");
 
         try {
             server = HttpServer.create(new InetSocketAddress(Integer.parseInt(portNumber)), MAX_WAITING_CONNECTIONS);
@@ -39,7 +41,7 @@ public class Server {
 
         server.start();
 
-        System.out.println("Server started");
+        System.out.println("server.Server started");
     }
 
     public static void main(String[] args) {
