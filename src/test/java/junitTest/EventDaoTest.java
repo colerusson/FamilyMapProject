@@ -3,7 +3,6 @@ package junitTest;
 import dao.DataAccessException;
 import dao.Database;
 import dao.EventDao;
-import model.AuthToken;
 import model.Event;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
