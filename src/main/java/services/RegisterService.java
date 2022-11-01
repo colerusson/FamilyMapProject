@@ -48,12 +48,9 @@ public class RegisterService {
             user = new User(username, password, email, firstName, lastName, gender, personIDForUser);
             uDao.insert(user);
 
-//            pDao = new PersonDao(conn);
-//            person = new Person(personIDForUser, username, firstName, lastName, gender, null, null, null);
-//            pDao.insert(person);
-
             db.closeConnection(true);
 
+            // 2. call FillService class to handle generating the tree of data
             FillRequest fillRequest = new FillRequest();
             fillRequest.setGenerations(generations);
             fillRequest.setUsername(username);
@@ -69,7 +66,8 @@ public class RegisterService {
                 return registerResult;
             }
 
-            conn = db.getConnection(); // get the connection again
+            // get the connection again
+            conn = db.getConnection();
 
             // 3. use similar login logic to login and return register result
             aDao = new AuthTokenDao(conn);

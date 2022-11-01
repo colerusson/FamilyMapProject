@@ -5,7 +5,7 @@ import java.net.*;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.*;
 import dao.DataAccessException;
-import helpers.AuthtokenService;
+import helpers.AuthTokenService;
 import helpers.HandlerHelper;
 import request.PersonIdRequest;
 import result.PersonIdResult;
@@ -23,7 +23,7 @@ public class PersonIdHandler implements HttpHandler {
                 if (reqHeaders.containsKey("Authorization")) {
                     // Extract the auth token from the "Authorization" header
                     String authToken = reqHeaders.getFirst("Authorization");
-                    AuthtokenService authtokenService = new AuthtokenService();
+                    AuthTokenService authtokenService = new AuthTokenService();
                     if (authtokenService.verify(authToken)) {
                         String urlString = exchange.getRequestURI().toString();
                         String personId = urlString.split("/")[2];

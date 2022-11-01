@@ -34,8 +34,8 @@ public class LoginService {
             String username = loginRequest.getUsername();
             String password = loginRequest.getPassword();
 
-            String authTokenString = null;
-            String personID = null;
+            String authTokenString;
+            String personID;
 
             LoginResult loginResult = new LoginResult();
 

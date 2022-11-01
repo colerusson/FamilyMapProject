@@ -5,10 +5,9 @@ import java.net.*;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.*;
 import dao.DataAccessException;
-import helpers.AuthtokenService;
+import helpers.AuthTokenService;
 import helpers.HandlerHelper;
 import request.PersonRequest;
-import result.PersonIdResult;
 import result.PersonResult;
 import services.PersonService;
 
@@ -26,7 +25,7 @@ public class PersonHandler implements HttpHandler {
                     if (reqHeaders.containsKey("Authorization")) {
                         // Extract the auth token from the "Authorization" header
                         String authToken = reqHeaders.getFirst("Authorization");
-                        AuthtokenService authtokenService = new AuthtokenService();
+                        AuthTokenService authtokenService = new AuthTokenService();
                         if (authtokenService.verify(authToken)) {
                             HandlerHelper handlerHelper = new HandlerHelper();
                             PersonRequest personRequest = new PersonRequest();

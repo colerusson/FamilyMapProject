@@ -4,7 +4,6 @@ import java.net.*;
 import java.nio.file.Files;
 
 import com.sun.net.httpserver.*;
-import helpers.HandlerHelper;
 
 public class FileHandler implements HttpHandler {
     @Override

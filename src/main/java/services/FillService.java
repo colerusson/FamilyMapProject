@@ -20,9 +20,6 @@ public class FillService {
     private PersonDao pDao;
     private EventDao eDao;
     private UserDao uDao;
-    private Person person;
-    private Person newPerson;
-    private Event newEvent;
     private User user;
     int eventsAdded;
     int peopleAdded;
@@ -74,8 +71,9 @@ public class FillService {
             familyTree.generateLastNames(fileSurnames);
             familyTree.generateLocations(fileLocations);
 
+            // set the date of birth for the root user to 2000
             DOB = 2000;
-
+            // call generate person function, which will call the recursive function
             generatePerson(user, generations, DOB);
 
             db.closeConnection(true);

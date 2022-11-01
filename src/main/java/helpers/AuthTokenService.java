@@ -5,15 +5,15 @@ import dao.Database;
 
 import java.sql.Connection;
 
-public class AuthtokenService {
+public class AuthTokenService {
     private Database db;
     private AuthTokenDao aDao;
-    public boolean verify(String authtoken) {
+    public boolean verify(String authToken) {
         db = new Database();
         try {
             Connection conn = db.getConnection();
             aDao = new AuthTokenDao(conn);
-            if (aDao.validate(authtoken)) {
+            if (aDao.validate(authToken)) {
                 db.closeConnection(true);
                 return true;
             }

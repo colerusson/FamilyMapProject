@@ -8,11 +8,13 @@ import model.Event;
 
 import java.io.File;
 import java.io.FileReader;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+// This class uses tree parser to parse the JSON file into lists of each data type
+// Then is also has methods to use those lists to generate random events, names, and locations, and such
 
 public class FamilyTree {
     private List<String> femaleNames = new ArrayList<>();
@@ -69,6 +71,7 @@ public class FamilyTree {
         }
     }
 
+    // generate a random location based on JSON file data
     public void generateLocations(File file) throws Exception {
         countries.clear();
         cities.clear();
@@ -102,6 +105,7 @@ public class FamilyTree {
         }
     }
 
+    // generate a random event based on JSON file data
     public Event generateEvent(int year, String username, String personID, String eventType) {
         Event event = new Event();
         event.setEventID(UUID.randomUUID().toString());
@@ -118,6 +122,7 @@ public class FamilyTree {
         return event;
     }
 
+    // generate a random name based on JSON file data
     public String getName(String nameType) {
         String name = null;
         if (nameType.equals("f")) {

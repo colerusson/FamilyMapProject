@@ -1,6 +1,5 @@
 package dao;
 
-import model.Event;
 import model.Person;
 
 import java.sql.Connection;
