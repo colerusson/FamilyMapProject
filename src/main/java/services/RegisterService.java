@@ -8,6 +8,7 @@ import model.AuthToken;
 import model.User;
 import request.FillRequest;
 import request.RegisterRequest;
+import result.FillResult;
 import result.RegisterResult;
 
 import java.sql.Connection;
@@ -53,6 +54,17 @@ public class RegisterService {
             fillRequest.setGenerations(4);
             fillRequest.setUsername(username);
 
+            FillService fillService = new FillService();
+            FillResult fillResult = fillService.fill(fillRequest);
+
+            RegisterResult registerResult = new RegisterResult();
+
+            if (!fillResult.isSuccess()) {
+                registerResult.setSuccess(false);
+                registerResult.setMessage("Error: missing values");
+                return registerResult;
+            }
+
             db.getConnection();
             // 3. use similar login logic to login and return register result
             String personID = null;
@@ -70,8 +82,6 @@ public class RegisterService {
             }
 
             db.closeConnection(true);
-
-            RegisterResult registerResult = new RegisterResult();
 
             if (username == null || password == null || email == null || firstName == null || lastName == null || gender == null) {
                 registerResult.setSuccess(false);
