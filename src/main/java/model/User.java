@@ -56,6 +56,10 @@ public class User {
         this.personID = personID;
     }
 
+    public User() {
+
+    }
+
     public String getUsername() {
         return username;
     }
