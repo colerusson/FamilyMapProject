@@ -28,6 +28,10 @@ public class LoadService {
             pDao = new PersonDao(conn);
             uDao = new UserDao(conn);
 
+            eDao.clear();
+            pDao.clear();
+            uDao.clear();
+
             int eventsLength = loadRequest.getEvents().length;
             int personsLength = loadRequest.getPersons().length;
             int usersLength = loadRequest.getUsers().length;

@@ -40,7 +40,7 @@ public class PersonService {
 
             if (persons != null) {
                 personResult.setData(persons);
-
+                personResult.setSuccess(true);
             }
             else {
                 personResult.setSuccess(false);

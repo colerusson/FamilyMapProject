@@ -2,7 +2,7 @@ package services;
 
 import dao.*;
 import model.Event;
-import model.FamilyTree;
+import helpers.FamilyTree;
 import model.Person;
 import model.User;
 import request.FillRequest;
@@ -10,7 +10,6 @@ import result.FillResult;
 
 import java.io.File;
 import java.sql.Connection;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -57,8 +56,6 @@ public class FillService {
                 return fillResult;
             }
 
-            //person = pDao.find(user.getPersonID());
-
             pDao.deletePersonsByUsername(username);
             eDao.deleteEventsByUsername(username);
 
@@ -77,19 +74,12 @@ public class FillService {
             familyTree.generateLastNames(fileSurnames);
             familyTree.generateLocations(fileLocations);
 
-            // regenerate person data and event data for the user himself
-//            newPerson = person;
-//            pDao.insert(newPerson);
-
             DOB = 2000;
-//            newEvent = familyTree.generateEvent(DOB, username, newPerson.getPersonID(), "birth");
-//            eDao.insert(newEvent);
 
             generatePerson(user, generations, DOB);
 
             db.closeConnection(true);
 
-            fillResult = new FillResult();
             fillResult.setSuccess(true);
             if (eventsAdded > 0 && peopleAdded > 0) {
                 fillResult.setMessage("Successfully added " + peopleAdded + " persons and " + eventsAdded + " events to the database.");
@@ -118,16 +108,16 @@ public class FillService {
         Person mother;
         Person father;
 
-        mother = generatePersonHelper(user.getUsername(), "f", generations, DOB-25);
-        father = generatePersonHelper(user.getUsername(), "m", generations, DOB-25);
+        mother = generatePersonRecursion(user.getUsername(), "f", generations, DOB-22);
+        father = generatePersonRecursion(user.getUsername(), "m", generations, DOB-22);
 
         mother.setSpouseID(father.getPersonID());
         father.setSpouseID(mother.getPersonID());
 
-        Event marriage = familyTree.generateEvent(DOB-25, user.getUsername(), mother.getPersonID(), "marraige");
+        Event marriage = familyTree.generateEvent(DOB-5, user.getUsername(), father.getPersonID(), "marriage");
         eDao.insert(marriage);
-        ++eventsAdded;
-        marriage.setPersonID(father.getPersonID());
+        eventsAdded++;
+        marriage.setPersonID(mother.getPersonID());
         marriage.setEventID(UUID.randomUUID().toString());
         eDao.insert(marriage);
         eventsAdded++;
@@ -146,27 +136,29 @@ public class FillService {
         peopleAdded+=3;
     }
 
-    private Person generatePersonHelper(String username, String gender, int generations, int DOB) throws DataAccessException {
+    private Person generatePersonRecursion(String username, String gender, int generations, int DOB) throws DataAccessException {
         Person mother = new Person();
         Person father = new Person();
         Person person = null;
 
         if (generations > 1) {
-            mother = generatePersonHelper(username, "f", generations - 1, DOB-25);
-            father = generatePersonHelper(username, "m", generations - 1, DOB-25);
-            mother.setSpouseID(father.getSpouseID());
+            mother = generatePersonRecursion(username, "f", generations - 1, DOB-22);
+            father = generatePersonRecursion(username, "m", generations - 1, DOB-22);
+            mother.setSpouseID(father.getPersonID());
             father.setSpouseID(mother.getPersonID());
 
-            Event marriage = familyTree.generateEvent(DOB-25, username, father.getPersonID(), "marriage");
+            Event marriage = familyTree.generateEvent(DOB-5, username, father.getPersonID(), "marriage");
             eDao.insert(marriage);
             marriage.setPersonID(mother.getPersonID());
             marriage.setEventID(UUID.randomUUID().toString());
+
             eDao.insert(marriage);
             pDao.insert(mother);
             pDao.insert(father);
             eventsAdded+=2;
             peopleAdded+=2;
         }
+
 
         if (gender.equals("f")) {
             String firstName = familyTree.getName("f");
@@ -175,6 +167,7 @@ public class FillService {
             person = new Person(UUID.randomUUID().toString(), username, firstName, lastName, "f", father.getPersonID(), mother.getPersonID(), null);
             Event birth = familyTree.generateEvent(DOB, username, person.getPersonID(), "birth");
             eDao.insert(birth);
+
             Event death = familyTree.generateEvent(DOB, username, person.getPersonID(), "death");
             eDao.insert(death);
             eventsAdded+=2;
@@ -186,6 +179,7 @@ public class FillService {
             person = new Person(UUID.randomUUID().toString(), username, firstName, lastName, "m", father.getPersonID(), mother.getPersonID(), null);
             Event birth = familyTree.generateEvent(DOB, username, person.getPersonID(), "birth");
             eDao.insert(birth);
+
             Event death = familyTree.generateEvent(DOB, username, person.getPersonID(), "death");
             eDao.insert(death);
             eventsAdded+=2;

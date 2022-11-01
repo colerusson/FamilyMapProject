@@ -60,7 +60,8 @@ public class PersonIdService {
                     personResult.setSuccess(true);
                 }
             }
-            else {
+
+            if (personResult.getAssociatedUsername() == null) {
                 personResult.setSuccess(false);
                 personResult.setMessage("Error: Person not found");
             }

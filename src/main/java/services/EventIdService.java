@@ -61,7 +61,7 @@ public class EventIdService {
                     eventResult.setSuccess(true);
                 }
             }
-            else {
+            if (eventResult.getAssociatedUsername() == null) {
                 eventResult.setSuccess(false);
                 eventResult.setMessage("Error: Event not found");
             }

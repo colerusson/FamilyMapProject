@@ -1,9 +1,10 @@
-package model;
+package helpers;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import model.Event;
 
 import java.io.File;
 import java.io.FileReader;
