@@ -1,10 +1,8 @@
 package services;
 
-import dao.AuthTokenDao;
-import dao.DataAccessException;
-import dao.Database;
-import dao.UserDao;
+import dao.*;
 import model.AuthToken;
+import model.Person;
 import model.User;
 import request.FillRequest;
 import request.RegisterRequest;
@@ -20,6 +18,8 @@ import java.util.UUID;
 public class RegisterService {
     private Database db;
     private UserDao uDao;
+    private PersonDao pDao;
+    private Person person;
     private User user;
     private AuthTokenDao aDao;
     private AuthToken authToken;
@@ -48,10 +48,14 @@ public class RegisterService {
             user = new User(username, password, email, firstName, lastName, gender, personIDForUser);
             uDao.insert(user);
 
+//            pDao = new PersonDao(conn);
+//            person = new Person(personIDForUser, username, firstName, lastName, gender, null, null, null);
+//            pDao.insert(person);
+
             db.closeConnection(true);
 
             FillRequest fillRequest = new FillRequest();
-            fillRequest.setGenerations(4);
+            fillRequest.setGenerations(generations);
             fillRequest.setUsername(username);
 
             FillService fillService = new FillService();
@@ -65,12 +69,16 @@ public class RegisterService {
                 return registerResult;
             }
 
-            db.getConnection();
+            conn = db.getConnection(); // get the connection again
+
             // 3. use similar login logic to login and return register result
+            aDao = new AuthTokenDao(conn);
             String personID = null;
             String authTokenString = null;
-            if (uDao.validate(username, password)) {
-                user = uDao.find(username);
+            UserDao uDao2 = new UserDao(conn);
+
+            if (uDao2.validate(username, password)) {
+                user = uDao2.find(username);
                 personID = user.getPersonID();
                 UUID uuid2 = UUID.randomUUID();
                 authTokenString = uuid2.toString().substring(0, 8);

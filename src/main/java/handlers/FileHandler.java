@@ -4,6 +4,7 @@ import java.net.*;
 import java.nio.file.Files;
 
 import com.sun.net.httpserver.*;
+import helpers.HandlerHelper;
 
 public class FileHandler implements HttpHandler {
     @Override
@@ -35,7 +36,11 @@ public class FileHandler implements HttpHandler {
                 }
                 else {
                     exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
-                    exchange.getResponseBody().close();
+                    OutputStream respBody = exchange.getResponseBody();
+                    String errorFilePath = "web/HTML/404.html";
+                    file = new File(errorFilePath);
+                    Files.copy(file.toPath(), respBody);
+                    respBody.close();
                 }
             }
         }

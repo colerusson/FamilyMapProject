@@ -14,7 +14,6 @@ public class ClearServiceTest {
     public void setUp() {
         clearService = new ClearService();
 
-
     }
 
     @AfterEach

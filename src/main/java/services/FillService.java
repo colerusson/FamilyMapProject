@@ -57,7 +57,7 @@ public class FillService {
                 return fillResult;
             }
 
-            person = pDao.find(user.getPersonID());
+            //person = pDao.find(user.getPersonID());
 
             pDao.deletePersonsByUsername(username);
             eDao.deleteEventsByUsername(username);
@@ -78,12 +78,12 @@ public class FillService {
             familyTree.generateLocations(fileLocations);
 
             // regenerate person data and event data for the user himself
-            newPerson = person;
-            pDao.insert(newPerson);
+//            newPerson = person;
+//            pDao.insert(newPerson);
 
             DOB = 2000;
-            newEvent = familyTree.generateEvent(DOB, username, newPerson.getPersonID(), "birth");
-            eDao.insert(newEvent);
+//            newEvent = familyTree.generateEvent(DOB, username, newPerson.getPersonID(), "birth");
+//            eDao.insert(newEvent);
 
             generatePerson(user, generations, DOB);
 
@@ -130,20 +130,20 @@ public class FillService {
         marriage.setPersonID(father.getPersonID());
         marriage.setEventID(UUID.randomUUID().toString());
         eDao.insert(marriage);
-        ++eventsAdded;
+        eventsAdded++;
 
         Person person = new Person(user.getPersonID(), user.getUsername(), user.getFirstName(),user.getLastName(), user.getGender(), father.getPersonID(), mother.getPersonID(), null);
         Event birth = familyTree.generateEvent(DOB, user.getUsername(), person.getPersonID(), "birth");
         eDao.insert(birth);
-        ++eventsAdded;
+        eventsAdded++;
         Event death = familyTree.generateEvent(DOB, user.getUsername(), person.getPersonID(), "death");
         eDao.insert(death);
-        ++eventsAdded;
+        eventsAdded++;
 
         pDao.insert(person);
         pDao.insert(mother);
         pDao.insert(father);
-        ++peopleAdded;
+        peopleAdded+=3;
     }
 
     private Person generatePersonHelper(String username, String gender, int generations, int DOB) throws DataAccessException {
@@ -164,8 +164,8 @@ public class FillService {
             eDao.insert(marriage);
             pDao.insert(mother);
             pDao.insert(father);
-            ++eventsAdded;
-            ++peopleAdded;
+            eventsAdded+=2;
+            peopleAdded+=2;
         }
 
         if (gender.equals("f")) {
@@ -175,10 +175,9 @@ public class FillService {
             person = new Person(UUID.randomUUID().toString(), username, firstName, lastName, "f", father.getPersonID(), mother.getPersonID(), null);
             Event birth = familyTree.generateEvent(DOB, username, person.getPersonID(), "birth");
             eDao.insert(birth);
-            ++eventsAdded;
             Event death = familyTree.generateEvent(DOB, username, person.getPersonID(), "death");
             eDao.insert(death);
-            ++eventsAdded;
+            eventsAdded+=2;
         }
         else if (gender.equals("m")) {
             String firstName = familyTree.getName("m");
@@ -187,10 +186,9 @@ public class FillService {
             person = new Person(UUID.randomUUID().toString(), username, firstName, lastName, "m", father.getPersonID(), mother.getPersonID(), null);
             Event birth = familyTree.generateEvent(DOB, username, person.getPersonID(), "birth");
             eDao.insert(birth);
-            ++eventsAdded;
             Event death = familyTree.generateEvent(DOB, username, person.getPersonID(), "death");
             eDao.insert(death);
-            ++eventsAdded;
+            eventsAdded+=2;
         }
 
         return person;
