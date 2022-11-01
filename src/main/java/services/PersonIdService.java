@@ -55,7 +55,7 @@ public class PersonIdService {
                     personResult.setFirstName(person.getFirstName());
                     personResult.setLastName(person.getLastName());
                     personResult.setFatherID(person.getFatherID());
-                    personResult.setMessage(person.getMotherID());
+                    personResult.setMotherID(person.getMotherID());
                     personResult.setSpouseID(person.getSpouseID());
                     personResult.setSuccess(true);
                 }

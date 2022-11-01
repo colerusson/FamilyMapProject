@@ -67,7 +67,7 @@ public class EventIdServiceTest {
         user.setGender("m");
         user.setFirstName("firstName");
         user.setLastName("lastName");
-        user.setPersonID("person_id");
+        user.setPersonID("personUser_id");
         user.setUsername("username");
         user.setPassword("password");
         uDao.insert(user);
@@ -92,7 +92,6 @@ public class EventIdServiceTest {
         assertEquals(80.5F, eventIdResult.getLatitude());
         assertEquals(2000, eventIdResult.getYear());
         assertTrue(eventIdResult.isSuccess());
-
     }
 
     @Test
@@ -104,5 +103,14 @@ public class EventIdServiceTest {
 
         assertFalse(eventIdResult.isSuccess());
         assertNotNull(eventIdResult.getMessage());
+        assertNull(eventIdResult.getEventID());
+        assertNull(eventIdResult.getYear());
+        assertNull(eventIdResult.getPersonID());
+        assertNull(eventIdResult.getLatitude());
+        assertNull(eventIdResult.getLongitude());
+        assertNull(eventIdResult.getAssociatedUsername());
+        assertNull(eventIdResult.getEventType());
+        assertNull(eventIdResult.getCountry());
+        assertNull(eventIdResult.getCity());
     }
 }

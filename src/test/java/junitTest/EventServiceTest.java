@@ -11,9 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import request.EventRequest;
 import request.FillRequest;
-import result.EventIdResult;
 import result.EventResult;
-import result.FillResult;
 import services.ClearService;
 import services.EventService;
 import services.FillService;
@@ -82,6 +80,7 @@ public class EventServiceTest {
         assertNotNull(eventResult.getData());
         assertEquals(92, eventResult.getData().length);
         assertTrue(eventResult.isSuccess());
+        assertNull(eventResult.getMessage());
     }
 
     @Test
