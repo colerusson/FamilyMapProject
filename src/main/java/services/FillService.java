@@ -102,16 +102,20 @@ public class FillService {
         }
     }
 
+    // This is the entry point function for the recursive family tree generation
+    // the user is passed in, along with his/her DOB, and the number of generations we want
     private void generatePerson(User user, int generations, int DOB) throws  DataAccessException {
         Person mother;
         Person father;
 
+        // the recursive part of the function is called, decrementing the DOB 22 years
         mother = generatePersonRecursion(user.getUsername(), "f", generations, DOB-22);
         father = generatePersonRecursion(user.getUsername(), "m", generations, DOB-22);
 
         mother.setSpouseID(father.getPersonID());
         father.setSpouseID(mother.getPersonID());
 
+        // the info for the last person is generated here after the recursion
         Event marriage = familyTree.generateEvent(DOB-5, user.getUsername(), father.getPersonID(), "marriage");
         eDao.insert(marriage);
         eventsAdded++;
@@ -134,17 +138,21 @@ public class FillService {
         peopleAdded+=3;
     }
 
+    // this is the recursive helper function for generating the family tree
     private Person generatePersonRecursion(String username, String gender, int generations, int DOB) throws DataAccessException {
         Person mother = new Person();
         Person father = new Person();
         Person person = null;
 
+        // if generations is more than one, then we step inside, call the function again recursively
+        // we decrement the generations by 1 each time, so we basically work our way all the way back to the oldest generation
         if (generations > 1) {
             mother = generatePersonRecursion(username, "f", generations - 1, DOB-22);
             father = generatePersonRecursion(username, "m", generations - 1, DOB-22);
             mother.setSpouseID(father.getPersonID());
             father.setSpouseID(mother.getPersonID());
 
+            // marriage event is handled here so that the two married people have the same info linking them together
             Event marriage = familyTree.generateEvent(DOB-5, username, father.getPersonID(), "marriage");
             eDao.insert(marriage);
             marriage.setPersonID(mother.getPersonID());
@@ -158,6 +166,7 @@ public class FillService {
         }
 
 
+        // generate a person based on gender, and add needed events
         if (gender.equals("f")) {
             String firstName = familyTree.getName("f");
             String lastName = familyTree.getName("l");

@@ -1,4 +1,4 @@
-package junitTest;
+package junitTestServer;
 
 import dao.DataAccessException;
 import org.junit.jupiter.api.AfterEach;

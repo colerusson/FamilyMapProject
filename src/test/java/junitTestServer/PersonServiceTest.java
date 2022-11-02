@@ -1,4 +1,4 @@
-package junitTest;
+package junitTestServer;
 
 import dao.AuthTokenDao;
 import dao.DataAccessException;
@@ -9,26 +9,24 @@ import model.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import request.EventRequest;
 import request.FillRequest;
-import result.EventResult;
-import services.ClearService;
-import services.EventService;
-import services.FillService;
+import request.PersonRequest;
+import result.PersonResult;
+import services.*;
 
 import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class EventServiceTest {
+public class PersonServiceTest {
     private ClearService clearService;
     private Database db;
     private UserDao uDao;
     private FillService fillService;
     private FillRequest fillRequest;
-    private EventService eventService;
-    private EventResult eventResult;
-    private EventRequest eventRequest;
+    private PersonService personService;
+    private PersonResult personResult;
+    private PersonRequest personRequest;
     private AuthTokenDao aDao;
 
     @BeforeEach
@@ -42,7 +40,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void eventServicePass() throws DataAccessException {
+    public void personServicePass() throws DataAccessException {
         db = new Database();
         Connection conn = db.getConnection();
         uDao = new UserDao(conn);
@@ -72,26 +70,26 @@ public class EventServiceTest {
         fillRequest.setGenerations(4);
         fillService.fill(fillRequest);
 
-        eventService = new EventService();
-        eventRequest = new EventRequest();
-        eventRequest.setAuthToken("auth_token");
-        eventResult = eventService.eventService(eventRequest);
+        personService = new PersonService();
+        personRequest = new PersonRequest();
+        personRequest.setAuthToken("auth_token");
+        personResult = personService.personService(personRequest);
 
-        assertNotNull(eventResult.getData());
-        assertEquals(92, eventResult.getData().length);
-        assertTrue(eventResult.isSuccess());
-        assertNull(eventResult.getMessage());
+        assertNotNull(personResult.getData());
+        assertEquals(31, personResult.getData().length);
+        assertTrue(personResult.isSuccess());
+        assertNull(personResult.getMessage());
     }
 
     @Test
-    public void eventServiceFail() throws DataAccessException {
-        eventService = new EventService();
-        eventRequest = new EventRequest();
-        eventRequest.setAuthToken("auth_token");
-        eventResult = eventService.eventService(eventRequest);
+    public void personServiceFail() throws DataAccessException {
+        personService = new PersonService();
+        personRequest = new PersonRequest();
+        personRequest.setAuthToken("auth_token");
+        personResult = personService.personService(personRequest);
 
-        assertNull(eventResult.getData());
-        assertNotNull(eventResult.getMessage());
-        assertFalse(eventResult.isSuccess());
+        assertNull(personResult.getData());
+        assertNotNull(personResult.getMessage());
+        assertFalse(personResult.isSuccess());
     }
 }

@@ -1,4 +1,4 @@
-package junitTest;
+package junitTestServer;
 
 import dao.*;
 import model.AuthToken;
